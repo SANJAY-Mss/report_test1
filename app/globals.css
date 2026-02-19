@@ -1,0 +1,142 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Light Mode Colors */
+  --background: 255 255 255;
+  --foreground: 10 10 15;
+  --card: 248 249 250;
+  --card-foreground: 10 10 15;
+  --border: 229 231 235;
+  --primary: 139 92 246;
+  --primary-foreground: 255 255 255;
+}
+
+.dark {
+  /* Dark Mode Colors */
+  --background: 10 10 15;
+  --foreground: 248 249 250;
+  --card: 19 19 26;
+  --card-foreground: 248 249 250;
+  --border: 31 31 46;
+  --primary: 139 92 246;
+  --primary-foreground: 255 255 255;
+}
+
+@layer base {
+  * {
+    border-color: rgb(var(--border));
+  }
+
+  body {
+    @apply bg-[rgb(var(--background))] text-[rgb(var(--foreground))];
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  }
+}
+
+@layer components {
+
+  /* Glassmorphism Card */
+  .glass-card {
+    @apply backdrop-blur-xl bg-white/10 dark:bg-white/5 border border-white/20 dark:border-white/10 rounded-2xl shadow-card-light dark:shadow-card-dark;
+  }
+
+  /* Glowing Purple Card */
+  .glow-card {
+    @apply relative overflow-hidden backdrop-blur-xl bg-gradient-to-br from-purple-500/10 to-pink-500/10 border border-purple-500/20 rounded-2xl;
+  }
+
+  .glow-card::before {
+    content: '';
+    @apply absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-500;
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.1) 0%, rgba(236, 72, 153, 0.1) 100%);
+  }
+
+  /* Premium Button */
+  .btn-primary {
+    @apply px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white font-medium rounded-full hover:shadow-glow-purple transition-all duration-300 hover:scale-105;
+  }
+
+  .btn-secondary {
+    @apply px-6 py-3 backdrop-blur-xl bg-white/10 dark:bg-white/5 border border-white/20 dark:border-white/10 rounded-full text-[rgb(var(--foreground))] font-medium hover:bg-white/20 dark:hover:bg-white/10 transition-all duration-300;
+  }
+
+  /* Glowing Border Effect */
+  .glow-border {
+    @apply relative;
+  }
+
+  .glow-border::after {
+    content: '';
+    @apply absolute -inset-[1px] rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10;
+    background: linear-gradient(135deg, #8b5cf6, #ec4899);
+    filter: blur(8px);
+  }
+
+  /* Score Circle */
+  .score-circle {
+    @apply relative w-32 h-32 rounded-full flex items-center justify-center;
+    background: conic-gradient(from 0deg, #8b5cf6 0%, #ec4899 var(--score), #1f1f2e var(--score), #1f1f2e 100%);
+  }
+
+  .score-circle::before {
+    content: '';
+    @apply absolute inset-2 rounded-full bg-[rgb(var(--card))];
+  }
+
+  /* Custom Scrollbar */
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    @apply bg-purple-500/30 rounded-full hover:bg-purple-500/50;
+  }
+}
+
+/* Gradient Text */
+.gradient-text {
+  @apply bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-pink-400 to-purple-600;
+}
+
+/* Animated Background */
+@keyframes gradient-shift {
+
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+.animated-gradient {
+  background: linear-gradient(135deg, #667eea, #764ba2, #8b5cf6, #ec4899);
+  background-size: 300% 300%;
+  animation: gradient-shift 15s ease infinite;
+}
+
+/* Dot Pattern Background */
+.dot-pattern {
+  background-image: radial-gradient(circle, rgba(139, 92, 246, 0.2) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+/* Loading Spinner */
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.spinner {
+  @apply inline-block w-6 h-6 border-2 border-purple-500 border-t-transparent rounded-full;
+  animation: spin 0.8s linear infinite;
+}

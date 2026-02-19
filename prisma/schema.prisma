@@ -1,0 +1,71 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String    @unique
+  password      String?
+  image         String?
+  role          String    @default("STUDENT")
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  reports       Report[]
+  chatSessions  ChatSession[]
+}
+
+model Report {
+  id          String    @id @default(cuid())
+  userId      String
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  filename    String
+  fileUrl     String
+  fileType    String?
+  fileSize    Int?
+  status      String    @default("PENDING")
+  analysis    Analysis?
+  uploadedAt  DateTime  @default(now())
+}
+
+model Analysis {
+  id              String   @id @default(cuid())
+  reportId        String   @unique
+  report          Report   @relation(fields: [reportId], references: [id], onDelete: Cascade)
+  structuralScore Int
+  formattingScore Int
+  grammarScore    Int
+  overallScore    Int
+  
+  // SQLite doesn't support Json/Enum well, using String and serialization
+  violations      String   // JSON string
+  suggestions     String   // JSON string
+  metadata        String?  // JSON string
+  fullText        String?  // Store full document text for Chat context (SQLite handles large strings)
+
+  createdAt       DateTime @default(now())
+}
+
+model ChatSession {
+  id        String    @id @default(cuid())
+  userId    String
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  reportId  String?
+  messages  ChatMessage[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model ChatMessage {
+  id            String      @id @default(cuid())
+  sessionId     String
+  role          String      // "USER" or "ASSISTANT"
+  content       String      // SQLite doesn't support @db.Text specific attribute easily, String is fine
+  timestamp     DateTime    @default(now())
+  session       ChatSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+}
