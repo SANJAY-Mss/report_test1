@@ -10,6 +10,8 @@ export default function DemoPage() {
             <Header />
 
             <section className="pt-32 pb-24 px-6 max-w-7xl mx-auto">
+                <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-blue-600/30 rounded-full blur-[120px] mix-blend-screen animate-pulse-slow" />
+                <div className="absolute top-[20%] right-[-10%] w-[400px] h-[400px] bg-cyan-600/20 rounded-full blur-[100px] mix-blend-screen animate-pulse-slow delay-1000" />
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
                     <div className="space-y-8 animate-fade-in">
                         <h1 className="text-4xl md:text-5xl font-bold leading-tight">
@@ -21,8 +23,8 @@ export default function DemoPage() {
 
                         <div className="space-y-4">
                             <div className="flex items-center gap-4">
-                                <div className="p-3 bg-purple-500/10 rounded-xl">
-                                    <Video className="w-6 h-6 text-purple-400" />
+                                <div className="p-3 bg-blue-500/10 rounded-xl">
+                                    <Video className="w-6 h-6 text-blue-400" />
                                 </div>
                                 <div>
                                     <h3 className="font-bold">Live Product Walkthrough</h3>
@@ -30,8 +32,8 @@ export default function DemoPage() {
                                 </div>
                             </div>
                             <div className="flex items-center gap-4">
-                                <div className="p-3 bg-pink-500/10 rounded-xl">
-                                    <Users className="w-6 h-6 text-pink-400" />
+                                <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-4 bg-cyan-500/10 text-cyan-400">
+                                    <Users className="w-6 h-6" />
                                 </div>
                                 <div>
                                     <h3 className="font-bold">Q&A Session</h3>

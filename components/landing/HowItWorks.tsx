@@ -1,4 +1,5 @@
 import { Upload, Cog, CheckCircle, Download } from "lucide-react";
+import ShinyText from "@/components/ui/ShinyText";
 
 const steps = [
     {
@@ -34,9 +35,14 @@ export function HowItWorks() {
                 {/* Section Header */}
                 <div className="text-center space-y-4 mb-16">
                     <h2 className="text-4xl md:text-5xl font-bold">
-                        It takes <span className="gradient-text">less than 1 minute</span>
+                        <ShinyText color="#e5e7eb" shineColor="#ff80ee" speed={3}>
+                            It takes
+                        </ShinyText>{" "}
+                        <span className="gradient-text">less than 1 minute</span>
                         <br />
-                        to create validations
+                        <ShinyText color="#e5e7eb" shineColor="#ff80ee" speed={3}>
+                            to create validations
+                        </ShinyText>
                     </h2>
                     <p className="text-lg text-foreground/60 max-w-2xl mx-auto">
                         Our streamlined 4-step process ensures fast, accurate, and comprehensive report analysis.
@@ -46,23 +52,25 @@ export function HowItWorks() {
                 {/* Steps */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 relative">
                     {steps.map((step, index) => (
-                        <div key={index} className="relative">
+                        <div key={index} className="relative group">
                             {/* Connector Line (Desktop) */}
                             {index < steps.length - 1 && (
-                                <div className="hidden lg:block absolute top-16 left-full w-full h-[2px] bg-gradient-to-r from-purple-500/50 to-transparent" style={{ width: 'calc(100% - 2rem)' }} />
+                                <div className="hidden lg:block absolute top-8 left-1/2 w-full h-[2px] bg-gradient-to-r from-blue-500/50 to-transparent z-0" />
                             )}
+                            {/* Hover effect */}
+                            <div className="absolute -inset-2 bg-blue-500/20 rounded-3xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity -z-10" />
 
                             {/* Step Card */}
                             <div className="space-y-4 text-center relative z-10">
                                 {/* Number Badge */}
-                                <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-purple-600 to-pink-600 text-white font-bold text-xl shadow-glow-purple">
+                                <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-purple-600 to-pink-600 text-white font-bold text-xl shadow-[0_0_20px_rgba(236,72,153,0.3)] relative z-10 bg-background">
                                     {step.number}
                                 </div>
 
                                 {/* Icon */}
                                 <div className="flex justify-center">
-                                    <div className="p-4 glass-card rounded-2xl">
-                                        <step.icon className="w-8 h-8 text-purple-400" />
+                                    <div className="w-12 h-12 rounded-2xl bg-purple-500/10 flex items-center justify-center border border-purple-500/20 group-hover:border-pink-500/50 transition-colors">
+                                        <step.icon className="w-6 h-6 text-purple-400 group-hover:text-pink-400 transition-colors" />
                                     </div>
                                 </div>
 

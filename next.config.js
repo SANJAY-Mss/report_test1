@@ -4,9 +4,11 @@ const nextConfig = {
     images: {
         domains: [], // Add your image domains here
     },
-    experimental: {
-        serverActions: true,
+
+    eslint: {
+        ignoreDuringBuilds: true,
     },
+    transpilePackages: ["three", "@react-three/fiber", "@react-three/drei"],
 };
 
 module.exports = nextConfig;

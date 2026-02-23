@@ -127,7 +127,7 @@ export default async function ReportDetailPage({ params }: PageProps) {
                     {/* Suggestions / Sidebar */}
                     <div className="space-y-6">
                         <h2 className="text-xl font-bold flex items-center gap-2">
-                            <Lightbulb className="w-5 h-5 text-purple-400" />
+                            <Lightbulb className="w-5 h-5 text-blue-400" />
                             Improvement Tips
                         </h2>
                         <div className="glass-card p-6 rounded-xl space-y-4">
@@ -137,7 +137,7 @@ export default async function ReportDetailPage({ params }: PageProps) {
                                 <ul className="space-y-4">
                                     {suggestions.map((tip: any, idx: number) => (
                                         <li key={idx} className="flex gap-3">
-                                            <CheckCircle2 className="w-5 h-5 text-purple-400 shrink-0 mt-0.5" />
+                                            <CheckCircle2 className="w-5 h-5 text-blue-400 shrink-0 mt-0.5" />
                                             <span className="text-sm text-foreground/80">
                                                 {typeof tip === 'string' ? tip : tip.description || "Improvement suggestion"}
                                             </span>

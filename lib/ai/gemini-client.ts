@@ -5,7 +5,14 @@ if (!process.env.GOOGLE_GEMINI_API_KEY) {
 }
 
 const genAI = new GoogleGenerativeAI(process.env.GOOGLE_GEMINI_API_KEY);
-const model = genAI.getGenerativeModel({ model: "gemini-flash-latest" });
+const model = genAI.getGenerativeModel({
+    model: "gemini-flash-latest",
+    generationConfig: {
+        temperature: 0,
+        topP: 0.1,
+        topK: 1
+    }
+});
 
 export interface GrammarlyAnalysisResult {
     structural_score: number;
@@ -46,18 +53,31 @@ export async function analyzeTextWithGemini(text: string): Promise<GrammarlyAnal
         console.log("Analyzing text length:", text.length);
         if (!text || text.length < 50) throw new Error("Extracted text is too short.");
         const prompt = `
-      Analyze the following academic project report text according to Anna University standards.
-      Focus on grammar, academic tone, clarity, spelling, structure, and formatting.
-      
+      ROLE: You are the "Academic Architect," a specialized AI engine designed to generate and audit project reports for Anna University students (2026 cycle). You must adhere to every rule below with 100% fidelity. Non-compliance with any rule—no matter how small—renders the report invalid.
+
+      Analyze the following academic project report text according to the Anna University 2026 Academic Report Protocol.
+      Focus heavily on grammar, academic tone, clarity, spelling, structure, formatting, and the following specific ADVANCED SYNTACTIC & GRAMMAR PROTOCOLS:
+
+      1. Perspective: Strictly Third Person. Flag any use of "I," "We," "Me," "My," "Our," or "You" as a CRITICAL error.
+      2. Contractions: Prohibited. Flag any contractions (e.g., "don't" instead of "do not") as a HIGH error.
+      3. Nominalization Trap: Eliminate "Static Nouns + Weak Verbs." Use active verbs instead (e.g., flag "performed an analysis of" and suggest "analyzed").
+      4. Voice Usage: 
+         - Passive Voice: ONLY for the Methodology section (e.g., "The solution was titrated").
+         - Active Voice: Must be used for Discussion/Conclusions to show strength (e.g., "The results indicate").
+      5. Hedging: Require cautious language for interpretations (e.g., "suggests," "tends to," "appears likely").
+      6. Signposting: Mandatory use of transitions like "Furthermore," "Conversely," or "Consequently" between paragraphs.
+
+      FINAL AUDIT DIRECTIVE: If the text deviates from these standards (e.g., using personal pronouns, incorrect phrasing, improper heading capitalization), you must strictly flag it in the issues array. The priority is technical precision over creative flair.
+
       Return ONLY valid JSON. Do not include markdown formatting.
       Response structure:
       {
         "structural_score": number (0-100), // Based on presence of Abstract, Introduction, Conclusion, etc.
         "formatting_score": number (0-100), // Based on capitalization, bullet points, header usage
-        "score": number (0-100), // Grammar score
+        "score": number (0-100), // Grammar score, drastically penalized for pronoun/contraction use
         "issues": [
           {
-            "type": "grammar" | "spelling" | "tone" | "clarity" | "structure" | "formatting",
+            "type": "grammar" | "spelling" | "tone" | "clarity" | "structure" | "formatting" | "syntactic_protocol",
             "description": "description of the issue",
             "suggestion": "suggested fix",
             "severity": "critical" | "high" | "medium" | "low"

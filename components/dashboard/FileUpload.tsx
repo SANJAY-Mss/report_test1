@@ -124,8 +124,8 @@ export function FileUpload() {
                                 <FileText className="w-8 h-8 text-green-500" />
                             </div>
                         ) : (
-                            <div className="p-4 bg-purple-500/10 rounded-full">
-                                <Upload className="w-8 h-8 text-purple-400" />
+                            <div className="p-4 rounded-full bg-blue-500/10 mb-4 group-hover:scale-110 transition-transform duration-300">
+                                <Upload className="w-8 h-8 text-blue-500" />
                             </div>
                         )}
 

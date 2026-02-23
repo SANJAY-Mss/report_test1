@@ -87,7 +87,7 @@ export async function POST(request: NextRequest) {
                         overallScore,
                         violations: JSON.stringify(aiResult.issues),
                         suggestions: JSON.stringify(aiResult.issues),
-                        metadata: JSON.stringify({ wordCount: textContent.split(/\s+/).length }),
+                        metadata: JSON.stringify({ wordCount: textContent.split(/\s+/).length, clarity: aiResult.clarity || 0 }),
                         fullText: textContent
                     }
                 }

@@ -3,6 +3,10 @@ import { prisma } from "@/lib/prisma";
 import { chatWithReport } from "@/lib/ai/gemini-client";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
+import { GoogleGenerativeAI } from "@google/generative-ai";
+
+const genAI = new GoogleGenerativeAI(process.env.GOOGLE_GEMINI_API_KEY!);
+const model = genAI.getGenerativeModel({ model: "gemini-flash-latest" });
 
 export async function POST(req: NextRequest) {
     try {
@@ -12,67 +16,46 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
         }
 
-        const { reportId, message } = await req.json();
+        const { reportId, message, history } = await req.json();
 
-        if (!reportId || !message) {
-            return NextResponse.json({ error: "Missing reportId or message" }, { status: 400 });
+        if (!message) {
+            return NextResponse.json({ error: "Missing message" }, { status: 400 });
         }
 
-        // Verify User
-        const user = await prisma.user.findUnique({
-            where: { email: session.user.email }
-        });
+        let answer = "";
 
-        if (!user) {
-            return NextResponse.json({ error: "User not found" }, { status: 404 });
-        }
+        if (reportId) {
+            // --- Contextual Chat (Report Specific) ---
+            const user = await prisma.user.findUnique({ where: { email: session.user.email } });
+            if (!user) return NextResponse.json({ error: "User not found" }, { status: 404 });
 
-        // Get Analysis Context
-        const analysis = await prisma.analysis.findUnique({
-            where: { reportId }
-        });
-
-        if (!analysis || !analysis.fullText) {
-            return NextResponse.json({ error: "Report analysis not found or missing text context. Please re-analyze the report." }, { status: 404 });
-        }
-
-        // Get AI Response
-        const answer = await chatWithReport(analysis.fullText, message);
-
-        // Save Chat History
-        let chatSession = await prisma.chatSession.findFirst({
-            where: {
-                userId: user.id,
-                reportId
+            const analysis = await prisma.analysis.findUnique({ where: { reportId } });
+            if (!analysis || !analysis.fullText) {
+                return NextResponse.json({ error: "Analysis context missing." }, { status: 404 });
             }
-        });
 
-        if (!chatSession) {
-            chatSession = await prisma.chatSession.create({
-                data: {
-                    userId: user.id,
-                    reportId
-                }
+            answer = await chatWithReport(analysis.fullText, message);
+
+            // Save to DB (Optional: skipping for now to keep it simple, or implement if needed)
+        } else {
+            // --- General Chat (Global Assistant) ---
+            // Use Gemini directly for general queries
+            // Filter out the initial assistant greeting because Gemini history MUST start with 'user'
+            const sanitizedHistory = history
+                ? history.filter((msg: any) => !(msg.role === 'assistant' && msg.content.includes("Hello! I'm your ReportGuard AI assistant")))
+                    .map((msg: any) => ({
+                        role: msg.role === 'user' ? 'user' : 'model',
+                        parts: [{ text: msg.content }],
+                    }))
+                : [];
+
+            const chat = model.startChat({
+                history: sanitizedHistory,
             });
+
+            const result = await chat.sendMessage(message);
+            answer = result.response.text();
         }
-
-        // Save User Message
-        await prisma.chatMessage.create({
-            data: {
-                sessionId: chatSession.id,
-                role: "USER",
-                content: message
-            }
-        });
-
-        // Save AI Response
-        await prisma.chatMessage.create({
-            data: {
-                sessionId: chatSession.id,
-                role: "ASSISTANT",
-                content: answer
-            }
-        });
 
         return NextResponse.json({ answer });
 

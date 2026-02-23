@@ -13,10 +13,10 @@ export function Badge({ children, variant = 'default', severity, className }: Ba
     const baseStyles = 'inline-flex items-center px-3 py-1 rounded-full text-xs font-medium';
 
     const variants = {
-        default: severity ? getSeverityColor(severity) : 'bg-purple-500/10 text-purple-500 border border-purple-500/20',
+        default: severity ? getSeverityColor(severity) : 'bg-blue-500/10 text-blue-500 border border-blue-500/20',
         outline: severity
             ? `border-2 ${getSeverityColor(severity)}`
-            : 'border-2 border-purple-500 text-purple-500',
+            : 'border-2 border-blue-500 text-blue-500',
     };
 
     return (

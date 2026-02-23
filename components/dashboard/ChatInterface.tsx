@@ -87,8 +87,8 @@ export function ChatInterface({ reportId }: { reportId: string }) {
                     {/* Header */}
                     <div className="p-4 border-b border-white/10 flex items-center justify-between bg-white/5 rounded-t-2xl">
                         <div className="flex items-center gap-2">
-                            <div className="p-2 bg-gradient-to-br from-purple-600 to-pink-600 rounded-lg">
-                                <Bot className="w-4 h-4 text-white" />
+                            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-600 to-cyan-600 flex items-center justify-center shrink-0">
+                                <Bot className="w-5 h-5 text-white" />
                             </div>
                             <div>
                                 <h3 className="font-bold text-white">Report Assistant</h3>
@@ -112,7 +112,7 @@ export function ChatInterface({ reportId }: { reportId: string }) {
                             >
                                 <div
                                     className={`max-w-[80%] p-3 rounded-2xl text-sm ${msg.role === "USER"
-                                        ? "bg-purple-600 text-white rounded-br-none"
+                                        ? "bg-blue-600 text-white rounded-br-none"
                                         : "bg-white/10 text-gray-200 rounded-bl-none border border-white/5"
                                         }`}
                                 >
@@ -123,7 +123,7 @@ export function ChatInterface({ reportId }: { reportId: string }) {
                         {isLoading && (
                             <div className="flex justify-start">
                                 <div className="bg-white/10 p-3 rounded-2xl rounded-bl-none border border-white/5">
-                                    <Loader2 className="w-4 h-4 animate-spin text-purple-400" />
+                                    <Loader2 className="w-4 h-4 animate-spin text-blue-400" />
                                 </div>
                             </div>
                         )}
@@ -138,14 +138,14 @@ export function ChatInterface({ reportId }: { reportId: string }) {
                                 value={input}
                                 onChange={(e) => setInput(e.target.value)}
                                 placeholder="Type your question..."
-                                className="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-sm text-white placeholder-white/40 focus:outline-none focus:border-purple-500 transition-colors"
+                                className="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-sm text-white placeholder-white/40 focus:outline-none focus:border-blue-500 transition-colors"
                             />
                             <button
                                 type="submit"
                                 disabled={isLoading || !input.trim()}
-                                className="p-2 bg-purple-600 hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed rounded-xl transition-colors"
+                                className="p-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                             >
-                                <Send className="w-4 h-4 text-white" />
+                                <Send className="w-5 h-5" />
                             </button>
                         </div>
                     </form>

@@ -11,57 +11,66 @@ export interface ValidationRule {
     requirement: string;
 }
 
-// Document Format Rules
+// Document Format Rules (2026 Standards)
 export const DOCUMENT_FORMAT = {
     pageSize: 'A4',
+    paperWeight: 'minimum 80 gsm white paper',
     pageDimensions: {
         width: 210, // mm
         height: 297, // mm
     },
     margins: {
-        left: 30, // mm
-        right: 20, // mm
-        top: 25, // mm
-        bottom: 25, // mm
+        left: 38.1, // mm (1.5 inches strictly for gutter)
+        right: 25.4, // mm (1.0 inch)
+        top: 38.1, // mm (1.5 inches)
+        bottom: 31.75, // mm (1.25 inches)
     },
     printSide: 'single',
+    ink: 'Black ink only',
     lineSpacing: 1.5,
     paragraphAlignment: 'justified',
-    firstLineIndent: '1.25cm',
+    firstLineIndent: '1.27cm', // 0.5 inches
 };
 
-// Font Rules
+// Font Rules (Times New Roman Only)
 export const FONT_RULES = {
     family: 'Times New Roman',
     sizes: {
-        body: 12,
-        sectionHeading: 14,
+        body: 14,
+        sectionHeading: 14, // Division Level 1
+        subDivision: 14, // Level 2+
         chapterTitle: 16,
+        mainTitle: 18,
+        captions: 12,
+        footnotes: 10,
+        referenceList: 14
     },
     styles: {
         body: 'normal',
-        sectionHeading: 'bold',
-        chapterTitle: 'bold uppercase',
+        sectionHeading: 'bold ALL CAPS Left-justified',
+        subDivision: 'bold Sentence Case Left-justified',
+        chapterTitle: 'bold ALL CAPS Centered',
+        mainTitle: 'bold ALL CAPS',
     },
 };
 
 // Required Sections in Exact Order
 export const REQUIRED_SECTIONS = [
-    { name: 'Title Page', order: 1, required: true },
+    { name: 'Cover Page (and Title Page)', order: 1, required: true },
     { name: 'Bonafide Certificate', order: 2, required: true },
-    { name: 'Declaration', order: 3, required: false },
+    { name: 'Declaration', order: 3, required: true },
     { name: 'Acknowledgement', order: 4, required: true },
     { name: 'Abstract', order: 5, required: true },
     { name: 'Table of Contents', order: 6, required: true },
     { name: 'List of Tables', order: 7, required: true },
     { name: 'List of Figures', order: 8, required: true },
-    { name: 'List of Abbreviations', order: 9, required: true },
+    { name: 'List of Symbols', order: 9, required: true },
     { name: 'Chapters', order: 10, required: true },
     { name: 'References', order: 11, required: true },
     { name: 'Appendices', order: 12, required: false },
 ];
 
-// Required Chapters
+// Required Chapters (Maintained from previous, ensuring logic holds)
 export const REQUIRED_CHAPTERS = [
     {
         number: 1,
@@ -101,16 +110,25 @@ export const REQUIRED_CHAPTERS = [
     },
 ];
 
+export const SPACING_PROTOCOLS = {
+    chapterHeadingDrop: '50mm below the top edge',
+    textCommencement: '4 line spaces below the Chapter Title',
+    mainBody: 1.5,
+    mandatoryDoubleSpacing: ['Bonafide Certificate', 'Abstract'],
+    tripleSpacingRule: 'Triple spacing is required from preceding and following text if a table or figure is half-page or less.',
+    referenceSpacing: '4 spaces below the "REFERENCES" heading; one clear line below each entry',
+};
+
 // Page Numbering Rules
 export const PAGE_NUMBERING = {
     preliminary: {
         style: 'roman', // i, ii, iii, iv, v...
-        position: 'bottom-center',
+        position: 'upper right-hand corner, 20mm from top edge, last digit flush right',
         sections: ['Bonafide', 'Declaration', 'Acknowledgement', 'Abstract', 'TOC', 'Lists'],
     },
     mainContent: {
         style: 'arabic', // 1, 2, 3, 4...
-        position: 'bottom-center',
+        position: 'upper right-hand corner, 20mm from top edge, last digit flush right',
         sections: ['Chapters', 'References', 'Appendices'],
     },
 };
@@ -132,18 +150,20 @@ export const TABLES_FIGURES = {
         pattern: /^(Table|Figure)\s+\d+\.\d+/,
     },
     captions: {
-        table: 'above',
-        figure: 'below',
+        table: 'above, left-aligned, Sentence Case',
+        figure: 'below, centered, Sentence Case',
     },
     referenceRequired: true,
     referencePattern: /refer to (Table|Figure)\s+\d+\.\d+/i,
+    splitRule: 'Never split a table across two pages.',
+    equations: 'Equations must be centered with consecutive Arabic numbering in parentheses flush to the right margin. Use LaTeX for notation.'
 };
 
 // Abstract Requirements
 export const ABSTRACT_RULES = {
     wordCount: {
-        min: 250,
-        max: 300,
+        min: 300,
+        max: 500,
     },
     requiredComponents: [
         'Problem Statement',
@@ -152,16 +172,19 @@ export const ABSTRACT_RULES = {
         'Conclusion',
     ],
     placement: 'before Table of Contents',
+    spacing: 'double-spaced essay format'
 };
 
-// Reference Format Rules (IEEE Style)
+// Reference Format Rules (Academic Integrity)
 export const REFERENCE_RULES = {
-    style: 'IEEE',
+    style: 'IEEE / Alphabetical',
     format: {
-        inText: '[1], [2], [3]',
-        pattern: /\[\d+\]/,
+        journal: "Author. (Year). 'Article Title'. Journal Name, Vol(No), pp.",
+        book: "Author. (Year). Book Title. Publisher.",
+        pattern: /\[\d+\]/, // Keep for legacy IEEE, but the new rule states Alphabetical by surname, though didn't explicitly remove brackets. We assume standard format.
     },
-    order: 'numerical',
+    spacing: 'Single-spaced, Left-justified. One clear line below each entry.',
+    order: 'Alphabetical by the first author’s surname',
     consistency: true, // In-text citations must match reference list
     required: true,
 };
@@ -238,22 +261,22 @@ export const VALIDATION_RULES: ValidationRule[] = [
         id: 'FMT-002',
         category: 'formatting',
         severity: 'high',
-        description: 'Font sizes must match requirements',
-        requirement: 'Body: 12pt, Headings: 14pt, Titles: 16pt',
+        description: 'Font sizes must match 2026 requirements',
+        requirement: 'Body: 14pt, Division: 14pt, Titles: 16-18pt',
     },
     {
         id: 'FMT-003',
         category: 'formatting',
         severity: 'high',
-        description: 'Margins must be correct',
-        requirement: 'L:30mm, R:20mm, T:25mm, B:25mm',
+        description: 'Margins must be strictly correct',
+        requirement: 'L:38.1mm, R:25.4mm, T:38.1mm, B:31.75mm',
     },
     {
         id: 'FMT-004',
         category: 'formatting',
         severity: 'medium',
         description: 'Line spacing must be 1.5',
-        requirement: '1.5 line spacing throughout',
+        requirement: '1.5 line spacing throughout main body',
     },
     {
         id: 'FMT-005',

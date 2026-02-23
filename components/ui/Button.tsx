@@ -20,10 +20,14 @@ export function Button({
     const baseStyles = 'inline-flex items-center justify-center font-medium rounded-full transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed';
 
     const variants = {
-        primary: 'bg-gradient-to-r from-purple-600 to-pink-600 text-white hover:shadow-glow-purple hover:scale-105',
-        secondary: 'glass-card text-foreground hover:bg-white/20 dark:hover:bg-white/10',
-        outline: 'border-2 border-purple-500 text-purple-500 hover:bg-purple-500/10',
-        ghost: 'text-foreground hover:bg-white/10',
+        primary: 'bg-gradient-to-r from-blue-600 to-cyan-600 text-white hover:shadow-glow-blue hover:scale-105',
+        default: "bg-blue-600 text-white hover:bg-blue-700 shadow-sm",
+        destructive: "bg-red-500 text-white hover:bg-red-600 shadow-sm",
+        outline: "border border-input bg-background hover:bg-accent hover:text-accent-foreground",
+        secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80",
+        ghost: "hover:bg-accent hover:text-accent-foreground",
+        link: "text-primary underline-offset-4 hover:underline",
+        premium: "bg-gradient-to-r from-blue-600 to-cyan-600 text-white hover:shadow-lg hover:shadow-blue-500/25 border-0",
     };
 
     const sizes = {

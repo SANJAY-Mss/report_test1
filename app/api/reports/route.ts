@@ -1,31 +1,36 @@
 import { NextResponse } from "next/server";
+import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
-import { prisma } from "@/lib/prisma";
 
-export async function GET() {
+export async function GET(req: Request) {
+    const session = await getServerSession(authOptions);
+
+    if (!session || !session.user?.email) {
+        console.log("API /reports: Unauthorized access attempt", { session });
+        return NextResponse.json({ error: "Unauthorized: Please sign in again." }, { status: 401 });
+    }
+
     try {
-        const session = await getServerSession(authOptions);
+        const { searchParams } = new URL(req.url);
+        const archived = searchParams.get('archived') === 'true';
 
-        if (!session || !session.user) {
-            return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-        }
+        const user = await prisma.user.findUnique({ where: { email: session.user.email } });
+        if (!user) return NextResponse.json({ error: "User not found" }, { status: 404 });
 
-        try {
-            const reports = await prisma.report.findMany({
-                where: { userId: session.user.id },
-                orderBy: { uploadedAt: "desc" },
-                take: 10,
-                include: { analysis: true }
-            });
+        const reports = await prisma.report.findMany({
+            where: {
+                userId: user.id,
+                isArchived: archived
+            },
+            orderBy: { uploadedAt: "desc" },
+            take: 10,
+            include: { analysis: true }
+        });
 
-            return NextResponse.json({ reports });
-        } catch (dbError) {
-            console.error("Database connection failed", dbError);
-            return NextResponse.json({ error: "Database connection failed. Please ensure Postgres is running." }, { status: 500 });
-        }
-
-    } catch (error) {
-        return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
+        return NextResponse.json({ reports });
+    } catch (dbError: any) {
+        console.error("Database Error:", dbError);
+        return NextResponse.json({ error: `Database Error: ${dbError.message}` }, { status: 500 });
     }
 }

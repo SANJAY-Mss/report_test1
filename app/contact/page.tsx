@@ -22,6 +22,8 @@ export default function ContactPage() {
             <Header />
 
             <section className="pt-32 pb-24 px-6 max-w-7xl mx-auto">
+                <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-blue-600/30 rounded-full blur-[120px] mix-blend-screen animate-pulse-slow" />
+                <div className="absolute top-[20%] right-[-10%] w-[400px] h-[400px] bg-cyan-600/20 rounded-full blur-[100px] mix-blend-screen animate-pulse-slow delay-1000" />
                 <div className="text-center max-w-3xl mx-auto space-y-4 mb-16 animate-fade-in">
                     <h1 className="text-4xl md:text-5xl font-bold">
                         Get in <span className="gradient-text">Touch</span>
@@ -38,8 +40,8 @@ export default function ContactPage() {
                             <h3 className="text-2xl font-bold">Contact Information</h3>
                             <div className="space-y-4">
                                 <div className="flex items-center gap-4">
-                                    <div className="p-3 bg-purple-500/10 rounded-xl">
-                                        <Mail className="w-6 h-6 text-purple-400" />
+                                    <div className="w-12 h-12 rounded-xl bg-blue-500/10 flex items-center justify-center mb-4 group-hover:bg-blue-500/20 transition-colors">
+                                        <Mail className="w-6 h-6 text-blue-400" />
                                     </div>
                                     <div>
                                         <p className="text-sm text-foreground/60">Email Us</p>
@@ -100,7 +102,7 @@ export default function ContactPage() {
                             <button
                                 type="submit"
                                 disabled={isSubmitting}
-                                className="w-full btn-primary flex items-center justify-center gap-2"
+                                className="w-full bg-gradient-to-r from-blue-600 to-cyan-600 text-white font-bold py-3 rounded-xl hover:shadow-glow-blue transition-all transform hover:scale-[1.02]"
                             >
                                 {isSubmitting ? "Sending..." : (
                                     <>
