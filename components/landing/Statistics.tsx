@@ -4,12 +4,12 @@ import Link from "next/link";
 
 export function Statistics() {
     return (
-        <section id="statistics" className="py-24 px-6 relative w-full overflow-hidden bg-transparent">
+        <section id="statistics" className="pt-16 pb-12 px-6 relative w-full overflow-hidden bg-transparent">
             {/* Ambient Background Glows */}
             <div className="absolute top-1/2 left-0 w-[600px] h-[600px] bg-purple-900/20 blur-[200px] rounded-full pointer-events-none -z-10" />
             <div className="absolute right-0 top-1/4 w-[400px] h-[400px] bg-fuchsia-900/10 blur-[150px] rounded-full pointer-events-none -z-10" />
 
-            <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-8 items-start">
+            <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
 
                 {/* Left Column: Headlines & Stat Cards */}
                 <div className="space-y-12 block">
@@ -116,7 +116,7 @@ export function Statistics() {
                     </div>
 
                     {/* Massive Stats Dropdown Box */}
-                    <div className="w-full bg-[#0a0a0f]/80 backdrop-blur-xl border border-white/5 rounded-3xl p-8 md:p-10 shadow-2xl relative overflow-hidden mt-6">
+                    <div className="w-full bg-[#0a0a0f]/80 backdrop-blur-xl border border-white/5 rounded-3xl p-8 md:p-10 shadow-2xl relative overflow-hidden mt-8">
                         <div className="absolute top-0 right-0 w-32 h-32 bg-fuchsia-500/10 blur-[50px] -z-10" />
 
                         <div className="mb-6">

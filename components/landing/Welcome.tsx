@@ -4,9 +4,9 @@ import React from "react";
 
 export function Welcome() {
     return (
-        <section id="welcome" className="py-24 px-6 relative w-full flex items-center justify-center">
+        <section id="welcome" className="pt-16 pb-8 px-6 relative w-full flex items-center justify-center">
             {/* Dark glass container */}
-            <div className="max-w-5xl w-full mx-auto bg-[#0a0a0f]/80 backdrop-blur-xl border border-purple-500/20 rounded-[3rem] p-10 md:p-20 shadow-[0_0_50px_rgba(168,85,247,0.15)] relative overflow-hidden">
+            <div className="max-w-5xl w-full mx-auto bg-[#0a0a0f]/80 backdrop-blur-xl border border-purple-500/20 rounded-[2.5rem] p-8 md:p-12 shadow-[0_0_50px_rgba(168,85,247,0.15)] relative overflow-hidden">
 
                 {/* Subtle corner glares */}
                 <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-purple-500/50 to-transparent" />

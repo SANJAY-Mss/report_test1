@@ -28,12 +28,12 @@ const steps = [
 
 export function HowItWorks() {
     return (
-        <section id="how-it-works" className="py-24 px-6 relative w-full flex flex-col items-center bg-transparent">
+        <section id="how-it-works" className="pt-8 pb-16 px-6 relative w-full flex flex-col items-center bg-transparent">
             {/* Ambient Lighting */}
             <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[800px] h-[600px] bg-purple-900/10 blur-[200px] rounded-full pointer-events-none -z-10" />
 
             <div className="max-w-6xl w-full mx-auto">
-                <div className="text-center mb-24 relative z-10">
+                <div className="text-center mb-16 relative z-10">
                     <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-white drop-shadow-[0_0_20px_rgba(255,255,255,0.2)]">
                         Four Steps to Secure Your <br className="hidden md:block" />
                         <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-fuchsia-500 drop-shadow-[0_0_30px_rgba(168,85,247,0.5)]">
@@ -48,7 +48,7 @@ export function HowItWorks() {
                     {/* The Center Dashed Line */}
                     <div className="absolute left-1/2 -translate-x-1/2 top-0 bottom-0 w-[2px] bg-[linear-gradient(to_bottom,transparent,rgba(217,70,239,0.5)_10%,rgba(217,70,239,0.5)_90%,transparent)] border-l-2 border-dashed border-fuchsia-500/50" />
 
-                    <div className="space-y-24 relative z-10">
+                    <div className="space-y-16 relative z-10">
                         {steps.map((step, index) => {
                             const isLeft = index % 2 === 0;
 
@@ -100,7 +100,7 @@ export function HowItWorks() {
                 </div>
 
                 {/* Decorative Right Image/Video Placeholder block to balance the timeline */}
-                <div className="w-full mt-24 flex justify-center lg:justify-end lg:-mt-64 relative z-0 opacity-50 lg:opacity-100 pointer-events-none">
+                <div className="w-full mt-12 flex justify-center lg:justify-end lg:-mt-48 relative z-0 opacity-50 lg:opacity-100 pointer-events-none">
                     <div className="w-[400px] h-[300px] bg-[#0a0a0f]/50 backdrop-blur-sm border border-purple-500/20 rounded-3xl shadow-[0_0_50px_rgba(168,85,247,0.1)] flex items-center justify-center">
                         <div className="w-16 h-16 rounded-full bg-white/5 border border-white/10 flex items-center justify-center">
                             <Play className="w-6 h-6 text-gray-500 ml-1" />

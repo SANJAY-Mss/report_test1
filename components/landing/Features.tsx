@@ -52,12 +52,12 @@ function DiamondCard({ index, title, subtitle, Icon }: { index: number, title: s
 
 export function Features() {
     return (
-        <section id="features" className="py-24 px-6 relative w-full overflow-hidden bg-transparent">
+        <section id="features" className="pt-8 pb-16 px-6 relative w-full overflow-hidden bg-transparent">
             {/* Background Magic Glows */}
             <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-purple-700/10 blur-[150px] rounded-full pointer-events-none -z-10" />
             <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-fuchsia-700/10 blur-[120px] rounded-full pointer-events-none -z-10" />
 
-            <div className="max-w-7xl mx-auto flex flex-col items-center gap-12 md:gap-20">
+            <div className="max-w-7xl mx-auto flex flex-col items-center gap-8 md:gap-12">
 
                 {/* Section Header */}
                 <div className="text-center w-full space-y-4">
@@ -71,7 +71,7 @@ export function Features() {
                 </div>
 
                 {/* Horizontal Diamond Array (Scrollable on small devices) */}
-                <div className="w-full overflow-x-auto pb-32 pt-28 px-4 sm:px-10 -mx-4 sm:-mx-10" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+                <div className="w-full overflow-x-auto pb-16 pt-16 px-4 sm:px-10 -mx-4 sm:-mx-10" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
                     <div className="flex flex-row items-center justify-center w-max lg:w-full mx-auto relative px-8">
                         {/* Connecting UI Background Line */}
                         <div className="absolute top-1/2 left-[10%] w-[80%] h-[1px] bg-fuchsia-500/20 -z-10" />

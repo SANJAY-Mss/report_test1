@@ -10,7 +10,7 @@ import { Footer } from "@/components/layout/Footer";
 
 export default function Home() {
     return (
-        <main className="min-h-screen pb-10">
+        <main className="min-h-screen">
             {/* Animated Background */}
             <div className="fixed inset-0 -z-10 overflow-hidden">
                 <div className="absolute inset-0 bg-[rgb(var(--background))]" />
@@ -22,7 +22,7 @@ export default function Home() {
             </div>
 
             <Header />
-            <div className="flex flex-col gap-10 mt-10">
+            <div className="w-full flex-col">
                 <Hero />
                 <Welcome />
                 <Statistics />
