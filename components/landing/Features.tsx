@@ -1,92 +1,90 @@
 "use client";
 
 import React from "react";
+import { Award, Zap, ShieldCheck, Headphones, Gift } from "lucide-react";
 
-function DiamondCard({ title, subtitle, variant = "small" }: { title: string, subtitle: string, variant?: "small" | "large" }) {
-    const isLarge = variant === "large";
+const featuresData = [
+    { title: "Guarantee", subtitle: "100% Anna University Format Compliant", icon: Award },
+    { title: "7+ years", subtitle: "Lightning Fast Processing in under 90s", icon: Zap },
+    { title: "400+ rules", subtitle: "Strict Structural Layout Policies Enforced", icon: ShieldCheck },
+    { title: "24/7 online", subtitle: "Spectral AI Chat Assistant always online", icon: Headphones },
+    { title: "Cheap", subtitle: "First 3 report validations completely free", icon: Gift },
+];
+
+function DiamondCard({ index, title, subtitle, Icon }: { index: number, title: string, subtitle: string, Icon: any }) {
+    const isEven = index % 2 === 0;
+
     return (
-        <div className="relative group flex-shrink-0">
-            {/* The Diamond Shape */}
-            <div
-                className={`
-                    flex items-center justify-center flex-shrink-0
-                    rotate-45 transition-all duration-500 hover:scale-105 cursor-pointer
-                    border-2 border-purple-500/80 bg-[#0a0a0f]/80 backdrop-blur-sm
-                    shadow-[0_0_30px_rgba(168,85,247,0.3)] hover:shadow-[0_0_50px_rgba(168,85,247,0.6)]
-                    ${isLarge ? "w-56 h-56 sm:w-64 sm:h-64 md:w-[320px] md:h-[320px]" : "w-40 h-40 sm:w-48 sm:h-48 md:w-[220px] md:h-[220px]"}
-                    mx-2 md:mx-6
-                `}
-            >
-                {/* Content Container (Counter-rotated to keep text straight) */}
-                <div className="-rotate-45 flex flex-col items-center justify-center text-center p-4 w-full h-full max-w-[90%] max-h-[90%] mx-auto">
-                    <h3 className={`font-bold text-white mb-2 drop-shadow-[0_0_10px_rgba(168,85,247,0.8)] ${isLarge ? "text-3xl md:text-5xl lg:text-6xl" : "text-xl md:text-2xl lg:text-3xl"}`}>
-                        {title}
-                    </h3>
-                    <p className={`text-purple-200/80 leading-tight font-medium ${isLarge ? "text-sm md:text-base lg:text-lg px-6" : "text-xs md:text-sm px-2"}`}>
-                        {subtitle}
-                    </p>
+        <div
+            className={`
+                relative flex items-center justify-center flex-shrink-0
+                w-[150px] h-[150px] md:w-[180px] md:h-[180px]
+                border-2 border-fuchsia-500/80 bg-[#0a0a0f]
+                rounded-[1.5rem] md:rounded-[2rem]
+                rotate-45
+                shadow-[0_0_20px_rgba(217,70,239,0.3)]
+                hover:shadow-[0_0_40px_rgba(217,70,239,0.7)]
+                hover:z-50 transition-all duration-300 group cursor-default
+                ${index !== 0 ? "-ml-[39.5px] md:-ml-[49px]" : ""}
+                ${isEven ? "translate-y-[55px] md:translate-y-[66px]" : "-translate-y-[55px] md:-translate-y-[66px]"}
+            `}
+        >
+            <div className="-rotate-45 flex flex-col items-center justify-center text-center p-2 w-[141%] h-[141%] md:gap-1">
+                <div className="mb-1 p-2 rounded-full bg-fuchsia-500/10 text-fuchsia-400 group-hover:bg-fuchsia-500/20 group-hover:text-fuchsia-300 transition-colors">
+                    <Icon className="w-4 h-4 md:w-6 md:h-6" />
                 </div>
+                <h3 className="font-bold text-white mb-1 text-xs md:text-[15px] drop-shadow-[0_0_8px_rgba(217,70,239,0.8)] leading-tight tracking-wide">
+                    {title}
+                </h3>
+                <p className="text-[9px] md:text-[11px] text-fuchsia-100/60 leading-tight max-w-[85px] md:max-w-[100px]">
+                    {subtitle}
+                </p>
             </div>
 
             {/* Glowing Corner Dots */}
-            <div className={`absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full shadow-[0_0_15px_#e879f9] bg-fuchsia-400 ${isLarge ? 'w-4 h-4' : 'w-3 h-3'}`} />
-            <div className={`absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 rounded-full shadow-[0_0_15px_#e879f9] bg-fuchsia-400 ${isLarge ? 'w-4 h-4' : 'w-3 h-3'}`} />
-            <div className={`absolute left-0 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full shadow-[0_0_15px_#e879f9] bg-fuchsia-400 ${isLarge ? 'w-4 h-4' : 'w-3 h-3'}`} />
-            <div className={`absolute right-0 top-1/2 translate-x-1/2 -translate-y-1/2 rounded-full shadow-[0_0_15px_#e879f9] bg-fuchsia-400 ${isLarge ? 'w-4 h-4' : 'w-3 h-3'}`} />
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-2 h-2 rounded-full shadow-[0_0_10px_#e879f9] bg-fuchsia-400 group-hover:scale-150 transition-transform" />
+            <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 w-2 h-2 rounded-full shadow-[0_0_10px_#e879f9] bg-fuchsia-400 group-hover:scale-150 transition-transform" />
+            <div className="absolute left-0 top-1/2 -translate-x-1/2 -translate-y-1/2 w-2 h-2 rounded-full shadow-[0_0_10px_#e879f9] bg-fuchsia-400 group-hover:scale-150 transition-transform" />
+            <div className="absolute right-0 top-1/2 translate-x-1/2 -translate-y-1/2 w-2 h-2 rounded-full shadow-[0_0_10px_#e879f9] bg-fuchsia-400 group-hover:scale-150 transition-transform" />
         </div>
     );
 }
 
 export function Features() {
     return (
-        <section id="features" className="py-32 px-6 relative w-full overflow-hidden bg-transparent">
+        <section id="features" className="py-24 px-6 relative w-full overflow-hidden bg-transparent">
             {/* Background Magic Glows */}
-            <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-purple-700/20 blur-[150px] rounded-full pointer-events-none -z-10" />
-            <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-fuchsia-700/20 blur-[120px] rounded-full pointer-events-none -z-10" />
+            <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-purple-700/10 blur-[150px] rounded-full pointer-events-none -z-10" />
+            <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-fuchsia-700/10 blur-[120px] rounded-full pointer-events-none -z-10" />
 
-            <div className="max-w-[90rem] mx-auto flex flex-col items-center gap-24">
+            <div className="max-w-7xl mx-auto flex flex-col items-center gap-12 md:gap-20">
 
                 {/* Section Header */}
-                <div className="text-center w-full space-y-6">
-                    <h2 className="text-5xl md:text-6xl font-black tracking-tight leading-tight text-white drop-shadow-[0_0_20px_rgba(255,255,255,0.2)]">
-                        Our <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-500 drop-shadow-[0_0_30px_rgba(168,85,247,0.5)]">Advantages</span>
-                    </h2>
-                    <p className="text-lg text-gray-400 max-w-2xl mx-auto font-light">
-                        We have carefully decoded the <strong className="text-purple-300">Anna University 2026 Academic Guidelines</strong> so that you never have to guess your formatting again. Join thousands of students who have secured their grades by exorcising grammatical errors before printing.
-                    </p>
+                <div className="text-center w-full space-y-4">
+                    <div className="inline-flex items-center justify-center gap-4 mb-2">
+                        <div className="w-8 md:w-16 h-[1px] bg-fuchsia-500/80 shadow-[0_0_10px_#e879f9]" />
+                        <span className="text-white font-extrabold text-xl md:text-3xl tracking-wide drop-shadow-[0_0_10px_rgba(255,255,255,0.5)]">
+                            Our Advantage
+                        </span>
+                        <div className="w-8 md:w-16 h-[1px] bg-fuchsia-500/80 shadow-[0_0_10px_#e879f9]" />
+                    </div>
                 </div>
 
-                {/* Horizontal Diamond Array */}
-                <div className="relative w-full flex flex-col md:flex-row items-center justify-center pt-20 pb-16">
+                {/* Horizontal Diamond Array (Scrollable on small devices) */}
+                <div className="w-full overflow-x-auto pb-32 pt-28 px-4 sm:px-10 -mx-4 sm:-mx-10" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+                    <div className="flex flex-row items-center justify-center w-max lg:w-full mx-auto relative px-8">
+                        {/* Connecting UI Background Line */}
+                        <div className="absolute top-1/2 left-[10%] w-[80%] h-[1px] bg-fuchsia-500/20 -z-10" />
 
-                    {/* Connecting UI Background Line */}
-                    <div className="hidden md:block absolute top-1/2 left-[10%] w-[80%] h-[2px] bg-gradient-to-r from-transparent via-purple-500/60 to-transparent -z-10 shadow-[0_0_20px_rgba(168,85,247,0.5)]" />
-
-                    {/* Left Diamond */}
-                    <div className="z-10 md:-mr-12 lg:-mr-8 relative mt-10 md:mt-0 shadow-2xl rounded-3xl">
-                        <DiamondCard
-                            title="90s"
-                            subtitle="Lightning Fast Report Audits"
-                            variant="small"
-                        />
-                    </div>
-
-                    {/* Center Diamond (Hero Element - Higher z-index) */}
-                    <div className="z-20 relative -mt-12 md:mt-0 md:-translate-y-16 shadow-2xl rounded-3xl">
-                        <DiamondCard
-                            title="100%"
-                            subtitle="Anna University Format Compliant"
-                            variant="large"
-                        />
-                    </div>
-
-                    {/* Right Diamond */}
-                    <div className="z-10 md:-ml-12 lg:-ml-8 relative -mt-12 md:mt-0 shadow-2xl rounded-3xl">
-                        <DiamondCard
-                            title="24/7"
-                            subtitle="Spectral AI Chat Assistant"
-                            variant="small"
-                        />
+                        {featuresData.map((feature, index) => (
+                            <DiamondCard
+                                key={index}
+                                index={index}
+                                title={feature.title}
+                                subtitle={feature.subtitle}
+                                Icon={feature.icon}
+                            />
+                        ))}
                     </div>
                 </div>
             </div>
