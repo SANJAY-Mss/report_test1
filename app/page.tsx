@@ -11,11 +11,15 @@ import { Footer } from "@/components/layout/Footer";
 export default function Home() {
     return (
         <main className="min-h-screen">
-            {/* Animated Background */}
-            <div className="fixed inset-0 -z-10 overflow-hidden">
-                <div className="absolute inset-0 bg-[rgb(var(--background))]" />
-                <div className="absolute top-0 left-0 w-full h-full dot-pattern opacity-20" />
+            {/* Fantasy Environment Background */}
+            <div className="fixed inset-0 -z-10 overflow-hidden bg-[#0a0a0f]">
+                {/* The Custom AI Image */}
+                <div className="absolute inset-0 bg-[url('/bg-fantasy.png')] bg-cover bg-center opacity-40" />
 
+                {/* Overlaying Dot Pattern for Texture */}
+                <div className="absolute top-0 left-0 w-full h-full dot-pattern opacity-30 mix-blend-overlay" />
+
+                {/* Ambient Glowing Orbs */}
                 <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-purple-600/20 rounded-full blur-[120px] mix-blend-screen animate-pulse-slow" />
                 <div className="absolute top-[20%] right-[-10%] w-[400px] h-[400px] bg-fuchsia-600/10 rounded-full blur-[100px] mix-blend-screen animate-pulse-slow delay-1000" />
                 <div className="absolute bottom-[-10%] left-[20%] w-[600px] h-[600px] bg-indigo-600/10 rounded-full blur-[120px] mix-blend-screen animate-pulse-slow delay-2000" />
