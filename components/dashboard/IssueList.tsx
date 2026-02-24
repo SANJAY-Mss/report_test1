@@ -8,6 +8,7 @@ interface Issue {
     severity?: string;
     description?: string;
     suggestion?: string;
+    page?: string;
 }
 
 interface IssueListProps {
@@ -36,9 +37,16 @@ export function IssueList({ violations }: IssueListProps) {
                     {violations.slice(0, visibleCount).map((issue, idx) => (
                         <div key={idx} className="glass-card p-6 rounded-xl border-l-4 border-yellow-500/50">
                             <div className="flex items-start justify-between mb-2">
-                                <span className="px-2 py-1 bg-yellow-500/10 text-yellow-400 text-xs rounded-full uppercase tracking-wider font-bold">
-                                    {issue.type || "Issue"}
-                                </span>
+                                <div className="flex gap-2 items-center">
+                                    <span className="px-2 py-1 bg-yellow-500/10 text-yellow-400 text-xs rounded-full uppercase tracking-wider font-bold">
+                                        {issue.type || "Issue"}
+                                    </span>
+                                    {issue.page && (
+                                        <span className="px-2 py-1 bg-blue-500/10 text-blue-400 text-xs rounded-full font-semibold">
+                                            Pg. {issue.page}
+                                        </span>
+                                    )}
+                                </div>
                                 <span className="text-xs text-foreground/40 uppercase">{issue.severity}</span>
                             </div>
                             <p className="text-foreground/80 mb-3">{issue.description}</p>
