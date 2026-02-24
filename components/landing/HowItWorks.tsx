@@ -1,96 +1,51 @@
-import { Upload, Cog, CheckCircle, Download } from "lucide-react";
-import ShinyText from "@/components/ui/ShinyText";
+"use client";
 
-const steps = [
-    {
-        number: "01",
-        icon: Upload,
-        title: "Upload Report",
-        description: "Drag and drop your PDF/DOCX project report. We validate file type and size instantly.",
-    },
-    {
-        number: "02",
-        icon: Cog,
-        title: "AI Analysis",
-        description: "Our system validates structure, formatting, grammar, and academic quality in real-time.",
-    },
-    {
-        number: "03",
-        icon: CheckCircle,
-        title: "Review Results",
-        description: "Get detailed compliance scores, categorized violations, and AI-generated improvement suggestions.",
-    },
-    {
-        number: "04",
-        icon: Download,
-        title: "Download Summary",
-        description: "Export a comprehensive analysis report ready for faculty review and final submission.",
-    },
-];
+import React from "react";
 
 export function HowItWorks() {
     return (
-        <section id="how-it-works" className="py-24 px-6 bg-[rgb(var(--card))]">
-            <div className="max-w-7xl mx-auto">
-                {/* Section Header */}
-                <div className="text-center space-y-4 mb-16">
-                    <h2 className="text-4xl md:text-5xl font-bold">
-                        <ShinyText color="#e5e7eb" shineColor="#ff80ee" speed={3}>
-                            It takes
-                        </ShinyText>{" "}
-                        <span className="gradient-text">less than 1 minute</span>
-                        <br />
-                        <ShinyText color="#e5e7eb" shineColor="#ff80ee" speed={3}>
-                            to create validations
-                        </ShinyText>
-                    </h2>
-                    <p className="text-lg text-foreground/60 max-w-2xl mx-auto">
-                        Our streamlined 4-step process ensures fast, accurate, and comprehensive report analysis.
-                    </p>
-                </div>
+        <section id="welcome" className="py-24 px-6 relative w-full flex items-center justify-center">
+            {/* Dark glass container */}
+            <div className="max-w-5xl w-full mx-auto bg-[#0a0a0f]/80 backdrop-blur-xl border border-purple-500/20 rounded-[3rem] p-10 md:p-20 shadow-[0_0_50px_rgba(168,85,247,0.15)] relative overflow-hidden">
 
-                {/* Steps */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 relative">
-                    {steps.map((step, index) => (
-                        <div key={index} className="relative group">
-                            {/* Connector Line (Desktop) */}
-                            {index < steps.length - 1 && (
-                                <div className="hidden lg:block absolute top-8 left-1/2 w-full h-[2px] bg-gradient-to-r from-blue-500/50 to-transparent z-0" />
-                            )}
-                            {/* Hover effect */}
-                            <div className="absolute -inset-2 bg-blue-500/20 rounded-3xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity -z-10" />
+                {/* Subtle corner glares */}
+                <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-purple-500/50 to-transparent" />
+                <div className="absolute bottom-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-purple-500/10 to-transparent" />
 
-                            {/* Step Card */}
-                            <div className="space-y-4 text-center relative z-10">
-                                {/* Number Badge */}
-                                <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-purple-600 to-pink-600 text-white font-bold text-xl shadow-[0_0_20px_rgba(236,72,153,0.3)] relative z-10 bg-background">
-                                    {step.number}
-                                </div>
+                <div className="text-center space-y-8 relative z-10 max-w-4xl mx-auto">
+                    <div className="space-y-2">
+                        <span className="text-purple-400 font-bold tracking-widest text-sm uppercase">Best Report Validator</span>
+                        <h2 className="text-4xl md:text-5xl font-black text-white drop-shadow-[0_0_15px_rgba(255,255,255,0.2)]">
+                            Welcome to ReportGuard
+                        </h2>
+                    </div>
 
-                                {/* Icon */}
-                                <div className="flex justify-center">
-                                    <div className="w-12 h-12 rounded-2xl bg-purple-500/10 flex items-center justify-center border border-purple-500/20 group-hover:border-pink-500/50 transition-colors">
-                                        <step.icon className="w-6 h-6 text-purple-400 group-hover:text-pink-400 transition-colors" />
-                                    </div>
-                                </div>
+                    <div className="space-y-6 text-base md:text-lg text-gray-300 leading-relaxed font-light">
+                        <p>
+                            Look! We all know the challenges of strict academic formatting—dealing with outdated university manuals,
+                            unresponsive layout tools, structural rejections, and leading to <span className="text-pink-400 font-medium">wasted marks</span>.
+                        </p>
 
-                                {/* Content */}
-                                <div className="space-y-2">
-                                    <h3 className="text-xl font-semibold">{step.title}</h3>
-                                    <p className="text-sm text-foreground/60 leading-relaxed">
-                                        {step.description}
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    ))}
-                </div>
+                        <p>
+                            We understand your frustration because we've been students facing the dreaded Anna University 2026 format too.
+                            We've been through the endless manual proofreading, spacing errors, and countless revisions.
+                        </p>
+                    </div>
 
-                {/* Timeline */}
-                <div className="mt-16 text-center space-y-4">
-                    <div className="inline-flex items-center gap-4 glass-card px-8 py-4 rounded-full">
-                        <div className="text-sm text-foreground/60">Average Processing Time:</div>
-                        <div className="text-2xl font-bold gradient-text">~90 seconds</div>
+                    <div className="pt-6 border-t border-white/10 space-y-4">
+                        <h3 className="text-2xl md:text-3xl font-bold text-white">
+                            Guess What? <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-500">No Worries, Students!</span>
+                        </h3>
+                        <p className="text-base md:text-lg text-gray-300 leading-relaxed font-light max-w-3xl mx-auto">
+                            With ReportGuard, your biggest formatting headache is instantly cured. We've built an AI-powered
+                            validation panel that parses every comma, margin, and pronoun to guarantee <strong>100% compliance</strong> before you print.
+                        </p>
+                    </div>
+
+                    <div className="pt-8">
+                        <button className="px-10 py-4 rounded-full bg-white/10 text-white border border-purple-500/50 hover:bg-purple-500/20 transition-all shadow-[0_0_20px_rgba(168,85,247,0.3)] hover:shadow-[0_0_40px_rgba(168,85,247,0.6)] font-bold tracking-wide">
+                            Try It Free Now
+                        </button>
                     </div>
                 </div>
             </div>

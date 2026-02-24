@@ -1,118 +1,88 @@
 "use client";
 
-import Link from "next/link";
-import { FileCheck, Brain, Zap, Shield, Award, MessageSquare, ArrowRight, Ghost } from "lucide-react";
-import { BentoGrid, BentoCard } from "./BentoGrid";
-import {
-    StructuralValidationGraphic,
-    AIAnalysisGraphic,
-    RealTimeGraphic,
-    StrictComplianceGraphic,
-    ComplianceScoreGraphic,
-    ChatbotGraphic
-} from "./FeatureGraphics";
-import { GridBackground } from "@/components/ui/Backgrounds";
+import React from "react";
 import ShinyText from "@/components/ui/ShinyText";
 
-const features = [
-    {
-        icon: Ghost,
-        title: "Structural Validation",
-        description: "Our paranormal detectors verify document structure against Anna University's 12 required sections.",
-        className: "md:col-span-2",
-        header: <StructuralValidationGraphic />,
-        gradient: "from-purple-500 to-pink-500",
-    },
-    {
-        icon: Brain,
-        title: "AI Wisdom",
-        description: "Gemini AI analyzes for grammar and tone, ensuring your report doesn't sound like zombie-speak.",
-        className: "md:col-span-1",
-        header: <AIAnalysisGraphic />,
-        gradient: "from-pink-500 to-orange-500",
-    },
-    {
-        icon: Zap,
-        title: "Lightning Fast",
-        description: "Results appear faster than a vampire at sunset. Full analysis in under 2 minutes.",
-        className: "md:col-span-1",
-        header: <RealTimeGraphic />,
-        gradient: "from-orange-500 to-red-500",
-    },
-    {
-        icon: Shield,
-        title: "Strict Compliance",
-        description: "Validates margins, fonts, and spacing. No formatting error can hide in the shadows.",
-        className: "md:col-span-2",
-        header: <StrictComplianceGraphic />,
-        gradient: "from-purple-500 to-indigo-500",
-    },
-    {
-        icon: Award,
-        title: "Scare Score",
-        description: "Get 4 detailed scores: Structural, Formatting, Grammar, and Overall compliance.",
-        className: "md:col-span-1",
-        header: <ComplianceScoreGraphic />,
-        gradient: "from-indigo-500 to-blue-500",
-    },
-    {
-        icon: MessageSquare,
-        title: "Spirit Guide Chat",
-        description: "Ask questions about your report. Get clarifications from our spectral AI assistant.",
-        className: "md:col-span-2",
-        header: <ChatbotGraphic />,
-        gradient: "from-blue-500 to-purple-500",
-    },
-];
+function DiamondCard({ title, subtitle, highlight }: { title: string, subtitle: string, highlight?: boolean }) {
+    return (
+        <div
+            className={`
+                w-48 h-48 sm:w-56 sm:h-56 md:w-64 md:h-64 rounded-3xl flex items-center justify-center flex-shrink-0
+                rotate-45 transition-all duration-500 hover:scale-105 cursor-pointer
+                border border-purple-500/40 bg-[#0a0a0f]
+                ${highlight
+                    ? "shadow-[0_0_40px_rgba(168,85,247,0.5)] border-purple-400"
+                    : "shadow-[0_0_20px_rgba(168,85,247,0.2)] hover:shadow-[0_0_30px_rgba(168,85,247,0.4)]"
+                }
+            `}
+        >
+            <div className="-rotate-45 flex flex-col items-center justify-center p-6 text-center w-full h-full">
+                <h3 className="text-2xl md:text-4xl font-extrabold text-white mb-2 drop-shadow-[0_0_10px_rgba(168,85,247,0.8)]">
+                    {title}
+                </h3>
+                <p className="text-xs md:text-sm text-purple-200/60 leading-tight">
+                    {subtitle}
+                </p>
+            </div>
+        </div>
+    );
+}
 
 export function Features() {
     return (
-        <section id="features" className="py-32 px-6 relative overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0f] via-transparent to-[#0a0a0f]/80 pointer-events-none -z-10" />
-            <GridBackground />
+        <section id="features" className="py-32 px-6 relative overflow-hidden bg-transparent">
+            {/* Background Magic Glows */}
+            <div className="absolute top-1/2 left-0 -translate-y-1/2 w-[500px] h-[500px] bg-purple-700/20 blur-[150px] rounded-full pointer-events-none -z-10" />
+            <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-indigo-700/20 blur-[120px] rounded-full pointer-events-none -z-10" />
 
-            <div className="max-w-7xl mx-auto relative z-10">
-                {/* Section Header */}
-                <div className="text-center space-y-6 mb-20 animate-fade-in">
-                    <h2 className="text-4xl md:text-5xl font-bold tracking-tight">
-                        <span className="gradient-text">Power Features</span>{" "}
-                        <ShinyText color="#e5e7eb" shineColor="#ff80ee" speed={3}>
-                            to Supercharge
-                        </ShinyText>
-                        <br />
-                        <ShinyText color="#e5e7eb" shineColor="#ff80ee" speed={3}>
-                            Your Report Validation
-                        </ShinyText>
-                    </h2>
-                    <p className="text-lg text-foreground/60 max-w-2xl mx-auto leading-relaxed">
-                        Combine rule-based academic validation with AI-powered language analysis
-                        for comprehensive report quality assurance.
-                    </p>
+            <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-20">
+                {/* Left Side: Diamond Grid */}
+                <div className="w-full lg:w-1/2 flex flex-col items-center justify-center relative pt-10">
+                    <div className="flex justify-center z-10 w-full">
+                        <DiamondCard
+                            title="100%"
+                            subtitle="Anna University Format Compliant"
+                            highlight={true}
+                        />
+                    </div>
+                    {/* Negative margin pulls the bottom row up to interlock the diamonds */}
+                    <div className="flex justify-center gap-8 sm:gap-12 md:gap-16 -mt-12 sm:-mt-16 md:-mt-20 w-full">
+                        <DiamondCard
+                            title="90s"
+                            subtitle="Lightning Fast Report Audits"
+                        />
+                        <DiamondCard
+                            title="24/7"
+                            subtitle="Spectral AI Chat Assistant"
+                        />
+                    </div>
                 </div>
 
-                <BentoGrid className="max-w-6xl mx-auto md:auto-rows-[22rem]">
-                    {features.map((feature, index) => (
-                        <BentoCard
-                            key={index}
-                            title={feature.title}
-                            description={feature.description}
-                            className={feature.className}
-                            header={feature.header}
-                            icon={
-                                <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${feature.gradient} p-2.5 mb-2 relative z-20 shadow-lg`}>
-                                    <feature.icon className="w-full h-full text-white" />
-                                </div>
-                            }
-                        />
-                    ))}
-                </BentoGrid>
+                {/* Right Side: Text Content */}
+                <div className="w-full lg:w-1/2 space-y-8 text-center lg:text-left">
+                    <h2 className="text-5xl md:text-6xl font-black tracking-tight leading-tight">
+                        Our <br />
+                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-500 drop-shadow-[0_0_20px_rgba(168,85,247,0.4)]">
+                            Advantages
+                        </span>
+                    </h2>
 
-                {/* Bottom CTA */}
-                <div className="text-center mt-20">
-                    <Link href="/signup" className="inline-flex items-center gap-2 text-sm font-medium text-blue-400 hover:text-blue-300 transition-colors group">
-                        <span>Explore all features</span>
-                        <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                    </Link>
+                    <div className="space-y-6 text-lg text-foreground/60 max-w-xl mx-auto lg:mx-0">
+                        <p>
+                            We have carefully decoded the <strong className="text-purple-300">Anna University 2026 Academic Guidelines</strong>
+                            so that you never have to guess your formatting again.
+                        </p>
+                        <p>
+                            Join thousands of students who have secured their grades by exorcising grammatical errors,
+                            fixing alignment faults, and generating the perfect report—rapidly and magically.
+                        </p>
+                    </div>
+
+                    <div className="pt-4 flex justify-center lg:justify-start">
+                        <button className="px-8 py-4 rounded-full bg-gradient-to-r from-purple-600 to-pink-600 text-white font-bold tracking-wide shadow-[0_0_20px_rgba(168,85,247,0.5)] hover:shadow-[0_0_40px_rgba(168,85,247,0.8)] transition-shadow duration-300 hover:scale-105 active:scale-95">
+                            Start Validating Now
+                        </button>
+                    </div>
                 </div>
             </div>
         </section>
