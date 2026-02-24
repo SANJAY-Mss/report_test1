@@ -6,6 +6,14 @@ import ShinyText from "@/components/ui/ShinyText";
 import { ElectricBorder } from "@/components/ui/ElectricBorder";
 import { prisma } from "@/lib/prisma";
 import { AnimatedCounter } from "@/components/ui/AnimatedCounter";
+import { Play } from "lucide-react";
+
+const timelineSteps = [
+    { title: "Upload Document", subtitle: "Step 1", points: ["Drop your PDF/DOCX file"] },
+    { title: "AI Validation", subtitle: "Step 2", points: ["Grammar rules verified"] },
+    { title: "Review Results", subtitle: "Step 3", points: ["Categorized errors found"] },
+    { title: "Secure Grade", subtitle: "Step 4", points: ["Make corrections locally"] },
+];
 
 export async function Hero() {
     let reportsCount = 0;
@@ -91,47 +99,60 @@ export async function Hero() {
                     </div>
                 </div>
 
-                {/* Right Column: 3D Visual */}
-                <div className="relative animate-float mt-12 lg:mt-0">
-                    <div className="absolute inset-0 bg-gradient-to-tr from-purple-500/20 to-pink-500/20 blur-3xl rounded-full transform scale-90" />
+                {/* Right Column: Embedded Timeline Visual */}
+                <div className="relative mt-12 lg:mt-0 lg:pl-10 h-[600px] flex items-center">
+                    <div className="absolute inset-0 bg-gradient-to-tr from-purple-500/10 to-pink-500/10 blur-3xl rounded-full transform scale-90" />
 
-                    {/* Main Image Container */}
-                    <div className="relative z-10 bg-gradient-to-b from-white/5 to-transparent border border-white/10 rounded-3xl p-4 backdrop-blur-sm shadow-2xl skew-y-1 transform hover:skew-y-0 transition-all duration-700">
-                        <ElectricBorder color="#a855f7" speed={1} chaos={0.05} borderRadius={16} className="w-full h-full">
-                            {/* Improved Reaper Image */}
-                            <div className="aspect-square rounded-2xl overflow-hidden bg-gradient-to-br from-[#1a1a1f] to-[#2e1065] relative group flex items-center justify-center w-full h-full">
-                                <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-20 mix-blend-overlay"></div>
-                                {/* Reaper Image */}
-                                <div className="relative w-80 h-80 animate-float flex items-center justify-center">
-                                    <div className="absolute inset-0 bg-purple-500 blur-3xl opacity-20 rounded-full animate-pulse"></div>
-                                    <img
-                                        src="/reaper.png"
-                                        alt="Spooky Reaper"
-                                        className="relative w-full h-full object-contain filter drop-shadow-[0_0_30px_rgba(139,92,246,0.3)] transform hover:scale-105 transition-transform duration-500"
-                                    />
-                                </div>
+                    <div className="relative w-full h-full max-w-md mx-auto z-10 py-10 overflow-hidden rounded-3xl bg-[#0a0a0f]/40 backdrop-blur-sm border border-white/5 shadow-2xl">
 
-                                {/* Aligned Notification */}
-                                <div className="absolute bottom-6 left-6 right-6 z-20 hidden md:block animate-slide-up delay-100">
-                                    <div className="flex items-center gap-4 bg-[#0a0a0f]/95 p-4 rounded-xl border border-red-500/20 shadow-[0_0_30px_rgba(239,68,68,0.1)]">
-                                        <div className="w-10 h-10 rounded-full bg-red-500/10 flex items-center justify-center text-red-400 shrink-0">
-                                            <Skull className="w-5 h-5" />
-                                        </div>
-                                        <div className="flex-1 text-left">
-                                            <div className="text-sm font-bold text-white leading-tight">Critical Error Found</div>
-                                            <div className="text-xs text-gray-400">Margin: 20mm (Expected 30mm)</div>
-                                        </div>
-                                        <div className="px-3 py-1 rounded bg-red-500/10 text-red-400 text-xs font-bold tracking-widest shrink-0">
-                                            FIXED
+                        {/* The Center Dashed Line */}
+                        <div className="absolute left-12 top-10 bottom-10 w-[2px] bg-[linear-gradient(to_bottom,transparent,rgba(217,70,239,0.5)_5%,rgba(217,70,239,0.5)_95%,transparent)] border-l-[2px] border-dashed border-fuchsia-500/50" />
+
+                        <div className="flex flex-col relative z-10 h-full justify-between">
+                            {timelineSteps.map((step, index) => (
+                                <div key={index} className="flex w-full items-center justify-start relative px-4">
+
+                                    {/* Center Node Marker */}
+                                    <div className="absolute left-[3rem] -translate-x-1/2 w-3 h-3 rounded-full bg-[#0a0a0f] border-[1.5px] border-fuchsia-400 shadow-[0_0_10px_#e879f9] z-20" />
+
+                                    {/* Timeline Card Wrapper */}
+                                    <div className="w-full flex items-center justify-start pl-[4.5rem] relative">
+
+                                        {/* Horizontal Dashed Connector */}
+                                        <div className="absolute top-1/2 -translate-y-1/2 left-[3rem] w-6 h-[2px] border-t-[2px] border-dashed border-fuchsia-500/50 z-0" />
+
+                                        {/* Card Content */}
+                                        <div className="w-full bg-[#0a0a0f]/80 backdrop-blur-md border border-white/10 rounded-2xl p-4 md:p-5 shadow-[0_0_20px_rgba(168,85,247,0.1)] relative group hover:border-fuchsia-500/40 transition-colors z-10">
+
+                                            {/* Glowing Play Icon badge */}
+                                            <div className="absolute -top-3 left-4 w-7 h-7 rounded-full bg-[#0a0a0f] shadow-[0_0_10px_rgba(217,70,239,0.4)] border border-fuchsia-500/80 flex items-center justify-center">
+                                                <Play className="w-2.5 h-2.5 text-fuchsia-400 ml-0.5" />
+                                            </div>
+
+                                            <div className="mt-1">
+                                                <h4 className="text-fuchsia-500 font-extrabold tracking-widest text-[9px] uppercase mb-0.5">
+                                                    {step.subtitle}
+                                                </h4>
+                                                <h3 className="text-sm md:text-base font-bold text-white mb-2 tracking-wide">
+                                                    {step.title}
+                                                </h3>
+
+                                                <ul className="space-y-1">
+                                                    {step.points.map((point, i) => (
+                                                        <li key={i} className="flex items-center gap-2 text-gray-400 text-[10px] md:text-xs">
+                                                            <div className="w-1 h-1 rounded-full bg-teal-400 shadow-[0_0_5px_#2dd4bf] flex-shrink-0" />
+                                                            {point}
+                                                        </li>
+                                                    ))}
+                                                </ul>
+                                            </div>
+
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </ElectricBorder>
+                            ))}
+                        </div>
                     </div>
-
-                    {/* Floating Elements */}
-                    <Spotlight className="absolute -bottom-20 -right-20 w-64 h-64 opacity-50" fill="#ec4899" />
                 </div>
             </div>
         </section>

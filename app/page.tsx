@@ -3,7 +3,6 @@ import { Hero } from "@/components/landing/Hero";
 import { Welcome } from "@/components/landing/Welcome";
 import { Statistics } from "@/components/landing/Statistics";
 import { Features } from "@/components/landing/Features";
-import { HowItWorks } from "@/components/landing/HowItWorks";
 import { CTA } from "@/components/landing/CTA";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
@@ -27,7 +26,6 @@ export default function Home() {
                 <Welcome />
                 <Statistics />
                 <Features />
-                <HowItWorks />
                 <CTA />
             </div>
             <Footer />
