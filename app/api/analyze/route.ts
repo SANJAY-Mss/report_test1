@@ -42,8 +42,7 @@ export async function POST(request: NextRequest) {
         }
 
         // 2. AI Analysis
-        // We pass the raw buffer and mimeType so Gemini can natively see the PDF layout and page numbers
-        const aiResult = await analyzeTextWithGemini(textContent, buffer, file.type);
+        const aiResult = await analyzeTextWithGemini(textContent);
 
         // 3. Structural/Formatting Scores (Real AI)
         const structuralScore = aiResult.structural_score || 0;

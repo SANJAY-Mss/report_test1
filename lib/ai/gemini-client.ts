@@ -50,19 +50,16 @@ async function withRetry<T>(fn: () => Promise<T>, retries = 3, delay = 10000): P
  * Analyze text using Google Gemini
  */
 export async function analyzeTextWithGemini(
-    text: string,
-    fileBuffer?: Buffer,
-    mimeType?: string
+    text: string
 ): Promise<GrammarlyAnalysisResult> {
     try {
         console.log("Analyzing text/document...");
         const prompt = `
       ROLE: You are the "Academic Architect," a specialized AI engine designed to generate and audit project reports for Anna University students (2026 cycle). You must adhere to every rule below with 100% fidelity.
 
-      Analyze the accompanying document according to the Anna University 2026 Academic Report Protocol.
-      Because we attached the raw PDF/Document, you MUST analyze visual alignment, structural order, page numbering, font properties, margins, and grammatical precision.
+      Analyze the accompanying text according to the Anna University 2026 Academic Report Protocol.
 
-      1. PAGE NUMBERS: For EVERY issue you find, you MUST include the document page number where it occurs in the "page" field.
+      1. PAGE NUMBERS: Try to approximate the page number of the error based on text flow, assign this to the "page" field.
       2. STRUCTURE AUDIT: Verify the presence, formatting, and order of these exact sections:
           - Cover Page & Title Page (Title, Name, College Logo, Department, Month & Year)
           - Bonafide Certificate (Signed by Guide and HOD. Times New Roman, 14pt, Double Spaced)
@@ -79,9 +76,7 @@ export async function analyzeTextWithGemini(
           - Passive Voice exclusively for Methodology, Active Voice for Discussion/Conclusions.
           - Eliminate Nominalization (Static Nouns + Weak Verbs).
       4. FORMATTING PROTOCOL: 
-          - Catch un-justified alignments in body text.
-          - Verify font sizes (e.g., 14pt body text size approximations).
-          - Catch spacing errors between paragraphs.
+          - Identify any obvious formatting violations from the scanned text.
 
       CRITICAL REQUIREMENT: You MUST provide an EXHAUSTIVE list of every single issue found. Aim for 20+ issues if the document is flawed. Do not stop analyzing early. Read the entire document.
 
@@ -103,22 +98,12 @@ export async function analyzeTextWithGemini(
         "tone": "formal" | "casual",
         "clarity": number (0-100)
       }
+
+      Text to analyze:
+      ${text.substring(0, 1500)}
     `;
 
-        const promptParts: any[] = [{ text: prompt }];
-
-        if (fileBuffer && mimeType === 'application/pdf') {
-            promptParts.push({
-                inlineData: {
-                    data: fileBuffer.toString("base64"),
-                    mimeType: "application/pdf"
-                }
-            });
-        } else {
-            promptParts.push({ text: `Text fallback: ${text.substring(0, 1500)}` });
-        }
-
-        const result = await withRetry(() => model.generateContent(promptParts));
+        const result = await withRetry(() => model.generateContent(prompt));
         const response = await result.response;
         const textResponse = response.text();
         console.log("Gemini Raw Response length:", textResponse.length);
@@ -163,16 +148,16 @@ export async function analyzeTextWithGemini(
 export async function generateSuggestions(text: string): Promise<string[]> {
     try {
         const prompt = `
-      Provide 3 - 5 high - level actionable suggestions to improve this academic report text.
+      Provide 3-5 high-level actionable suggestions to improve this academic report text.
       Focus on structure, flow, and academic vocabulary.
       Output as a JSON array of strings.
-
-                Text:
-                ${text.substring(0, 3000)}
-                    `;
+      
+      Text:
+      ${text.substring(0, 3000)}
+    `;
 
         const result = await withRetry(() => model.generateContent(prompt));
-        const jsonStr = result.response.text().replace(/^```json\n |\n```$/g, '').trim();
+        const jsonStr = result.response.text().replace(/^```json\n|\n```$/g, '').trim();
         return JSON.parse(jsonStr);
     } catch (error) {
         return ["Could not generate suggestions at this time."];
@@ -186,13 +171,13 @@ export async function chatWithReport(context: string, question: string): Promise
     try {
         const prompt = `
       You are an helpful academic assistant analyzing a student report.
-
-                Context(Report Content):
-                ${context.substring(0, 20000)}
+      
+      Context (Report Content):
+      ${context.substring(0, 20000)}
       
       User Question: ${question}
       
-      Answer the question based strictly on the provided context.If the answer is not in the context, say "I cannot find that information in the report."
+      Answer the question based strictly on the provided context. If the answer is not in the context, say "I cannot find that information in the report."
       Keep answers concise and professional.
     `;
 
