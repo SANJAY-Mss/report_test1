@@ -114,7 +114,7 @@ export async function analyzeTextWithGemini(
       }
 
       Text to analyze:
-      ${text.substring(0, 1500)}
+      ${text.substring(0, 150000)}
     `;
 
         const result = await withRetry(() => model.generateContent(prompt));
@@ -285,7 +285,7 @@ export async function generateSuggestions(text: string): Promise<string[]> {
       Output as a JSON array of strings.
       
       Text:
-      ${text.substring(0, 3000)}
+      ${text.substring(0, 150000)}
     `;
 
         const result = await withRetry(() => model.generateContent(prompt));
@@ -314,7 +314,7 @@ export async function chatWithReport(context: string, question: string): Promise
       You are an helpful academic assistant analyzing a student report.
       
       Context (Report Content):
-      ${context.substring(0, 20000)}
+      ${context.substring(0, 150000)}
       
       User Question: ${question}
       
