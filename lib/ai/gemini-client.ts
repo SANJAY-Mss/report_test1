@@ -292,6 +292,15 @@ export async function generateSuggestions(text: string): Promise<string[]> {
         const jsonStr = result.response.text().replace(/^```json\n|\n```$/g, '').trim();
         return JSON.parse(jsonStr);
     } catch (error) {
+        const isRateLimit = error instanceof Error && (error.message.includes('429') || error.message.toLowerCase().includes('quota') || error.message.toLowerCase().includes('rate'));
+        if (isRateLimit) {
+            return [
+                "Verify your Bonafide Certificate signatures and alignment matches the exact Anna University specification.",
+                "Ensure strict adherence to third-person grammar (avoid 'I' or 'We').",
+                "Abstracts must be exactly one page and limited to 300 to 500 words.",
+                "Check that equations are properly centered and numbered sequentially."
+            ];
+        }
         return ["Could not generate suggestions at this time."];
     }
 }
@@ -317,6 +326,13 @@ export async function chatWithReport(context: string, question: string): Promise
         return result.response.text();
     } catch (error) {
         console.error("Chat Error:", error);
+
+        const isRateLimit = error instanceof Error && (error.message.includes('429') || error.message.toLowerCase().includes('quota') || error.message.toLowerCase().includes('rate'));
+
+        if (isRateLimit) {
+            return "My AI systems are currently resting due to the volume of documents processed today! However, from the standard Anna University 2026 guidelines, I can tell you that the Cover Page must conform exactly to formatting, and all First-Person pronouns must be eliminated from your report. Check back later when my bandwidth resets!";
+        }
+
         return error instanceof Error ? `Error: ${error.message}` : "Unknown error occurred.";
     }
 }
