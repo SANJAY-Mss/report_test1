@@ -3,8 +3,9 @@ import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { redirect } from "next/navigation";
 import { Header } from "@/components/layout/Header";
-import { ArrowLeft, CheckCircle2, AlertTriangle, Lightbulb, FileText, Download } from "lucide-react";
+import { ArrowLeft, CheckCircle2, FileText, Download, Lightbulb } from "lucide-react";
 import { ChatInterface } from "@/components/dashboard/ChatInterface";
+import { IssueList } from "@/components/dashboard/IssueList";
 import Link from "next/link";
 
 interface PageProps {
@@ -94,35 +95,7 @@ export default async function ReportDetailPage({ params }: PageProps) {
                 {/* Main Content Grid */}
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                     {/* Violations / Issues */}
-                    <div className="lg:col-span-2 space-y-6">
-                        <h2 className="text-xl font-bold flex items-center gap-2">
-                            <AlertTriangle className="w-5 h-5 text-yellow-400" />
-                            Issues Found
-                        </h2>
-                        {violations.length === 0 ? (
-                            <div className="glass-card p-6 rounded-xl text-center text-foreground/60">
-                                No significant issues found. Great job!
-                            </div>
-                        ) : (
-                            <div className="space-y-4">
-                                {violations.map((issue: any, idx: number) => (
-                                    <div key={idx} className="glass-card p-6 rounded-xl border-l-4 border-yellow-500/50">
-                                        <div className="flex items-start justify-between mb-2">
-                                            <span className="px-2 py-1 bg-yellow-500/10 text-yellow-400 text-xs rounded-full uppercase tracking-wider font-bold">
-                                                {issue.type || "Issue"}
-                                            </span>
-                                            <span className="text-xs text-foreground/40 uppercase">{issue.severity}</span>
-                                        </div>
-                                        <p className="text-foreground/80 mb-3">{issue.description}</p>
-                                        <div className="bg-white/5 p-3 rounded-lg text-sm text-foreground/70">
-                                            <span className="font-bold text-green-400">Suggestion: </span>
-                                            {issue.suggestion}
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-                        )}
-                    </div>
+                    <IssueList violations={violations} />
 
                     {/* Suggestions / Sidebar */}
                     <div className="space-y-6">
