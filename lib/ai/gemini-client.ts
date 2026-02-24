@@ -6,9 +6,9 @@ if (!process.env.GOOGLE_GEMINI_API_KEY) {
 
 const genAI = new GoogleGenerativeAI(process.env.GOOGLE_GEMINI_API_KEY);
 const model = genAI.getGenerativeModel({
-    model: "gemini-flash-latest",
+    model: "gemini-1.5-flash",
     generationConfig: {
-        temperature: 0,
+        temperature: 0.1,
         topP: 0.1,
         topK: 1
     }
@@ -88,8 +88,8 @@ export async function analyzeTextWithGemini(text: string): Promise<GrammarlyAnal
         "clarity": number (0-100)
       }
 
-      Text to analyze (first 2000 words):
-      ${text.substring(0, 5000)}
+      Text to analyze (first 1000 words):
+      ${text.substring(0, 1800)}
     `;
 
         const result = await withRetry(() => model.generateContent(prompt));
