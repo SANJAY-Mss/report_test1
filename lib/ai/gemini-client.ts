@@ -68,6 +68,7 @@ export async function analyzeTextWithGemini(text: string): Promise<GrammarlyAnal
       6. Signposting: Mandatory use of transitions like "Furthermore," "Conversely," or "Consequently" between paragraphs.
 
       FINAL AUDIT DIRECTIVE: If the text deviates from these standards (e.g., using personal pronouns, incorrect phrasing, improper heading capitalization), you must strictly flag it in the issues array. The priority is technical precision over creative flair.
+      CRITICAL REQUIREMENT: You MUST provide an EXHAUSTIVE list of every single issue found. Do not summarize or limit the output. Aim for 15+ individual issues. Each unique instance of a pronoun, contraction, or passive voice mistake must be its own issue in the array.
 
       Return ONLY valid JSON. Do not include markdown formatting.
       Response structure:
@@ -114,14 +115,17 @@ export async function analyzeTextWithGemini(text: string): Promise<GrammarlyAnal
     } catch (error) {
         console.error("Gemini Analysis Error:", error);
         // Return safe fallback
+        // Return safe fallback with dynamic error reporting
+        const isRateLimit = error instanceof Error && (error.message.includes('429') || error.message.toLowerCase().includes('quota') || error.message.toLowerCase().includes('rate'));
+
         return {
             structural_score: 0,
             formatting_score: 0,
             score: 0,
             issues: [{
                 type: 'system',
-                description: 'AI Analysis failed. Please check your API Key.',
-                suggestion: 'Verify GOOGLE_GEMINI_API_KEY in .env',
+                description: isRateLimit ? 'Google AI Rate Limit Exceeded.' : 'AI Analysis failed.',
+                suggestion: isRateLimit ? 'Please wait 1-2 minutes for the free tier quota to reset before analyzing another report.' : 'Please check your API Key and server logs.',
                 severity: 'critical',
                 error: error instanceof Error ? error.message : "AI Service Unavailable"
             }],
