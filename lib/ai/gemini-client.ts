@@ -6,7 +6,7 @@ if (!process.env.GOOGLE_GEMINI_API_KEY) {
 
 const genAI = new GoogleGenerativeAI(process.env.GOOGLE_GEMINI_API_KEY);
 const model = genAI.getGenerativeModel({
-    model: "gemini-1.5-flash",
+    model: "gemini-flash-latest",
     generationConfig: {
         temperature: 0.1,
         topP: 0.1,
@@ -32,14 +32,14 @@ export interface GrammarlyAnalysisResult {
 
 const sleep = (ms: number) => new Promise(r => setTimeout(r, ms));
 
-async function withRetry<T>(fn: () => Promise<T>, retries = 3, delay = 2000): Promise<T> {
+async function withRetry<T>(fn: () => Promise<T>, retries = 3, delay = 10000): Promise<T> {
     try {
         return await fn();
     } catch (error: any) {
-        if (retries > 0 && (error.status === 429 || error.message?.includes('429'))) {
-            console.warn(`Gemini Rate Limit (429). Retrying in ${delay}ms...`);
+        if (retries > 0 && (error.status === 429 || error.message?.includes('429') || error.message?.toLowerCase().includes('quota') || error.message?.toLowerCase().includes('rate'))) {
+            console.warn(`Gemini API Quota reached. Halting thread for ${delay / 1000} seconds before retry...`);
             await sleep(delay);
-            return withRetry(fn, retries - 1, delay * 2); // Exponential backoff
+            return withRetry(fn, retries - 1, delay * 1.5); // Exponential backoff
         }
         throw error;
     }
@@ -88,8 +88,8 @@ export async function analyzeTextWithGemini(text: string): Promise<GrammarlyAnal
         "clarity": number (0-100)
       }
 
-      Text to analyze (first 1000 words):
-      ${text.substring(0, 1800)}
+      Text to analyze:
+      ${text.substring(0, 1200)}
     `;
 
         const result = await withRetry(() => model.generateContent(prompt));
