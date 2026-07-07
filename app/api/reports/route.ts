@@ -24,7 +24,6 @@ export async function GET(req: Request) {
                 isArchived: archived
             },
             orderBy: { uploadedAt: "desc" },
-            take: 10,
             include: { analysis: true }
         });
 

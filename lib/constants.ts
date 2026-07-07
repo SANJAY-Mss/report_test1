@@ -1,10 +1,10 @@
 // Application-wide constants
 
 export const APP_CONFIG = {
-    name: 'ReportGuard',
+    name: 'Project Tracker',
     description: 'AI-Powered Academic Report Analyzer',
     version: '1.0.0',
-    author: 'ReportGuard Team',
+    author: 'Project Tracker Team',
 };
 
 export const FILE_UPLOAD = {

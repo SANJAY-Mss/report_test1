@@ -16,7 +16,7 @@ export function DashboardPreview() {
                         <div className="w-3 h-3 rounded-full bg-green-500/20" />
                     </div>
                     <div className="mx-auto w-1/3 h-5 bg-white/5 rounded-full flex items-center justify-center text-[10px] text-white/20 font-mono">
-                        reportguard.ai/dashboard
+                        projecttracker.ai/dashboard
                     </div>
                 </div>
 

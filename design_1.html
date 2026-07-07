@@ -1,0 +1,543 @@
+<html lang="en" class="antialiased" vid="0"><head vid="1">
+    <meta charset="UTF-8" vid="2">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" vid="3">
+    <title vid="4">Retune - Cognitive Audio Interface</title>
+    <script src="https://cdn.tailwindcss.com" vid="5"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" vid="6"></script>
+    <style vid="7">
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap');
+
+        :root {
+            --bg-color: #050505;
+            --text-primary: #EAEAEA;
+            --text-secondary: #666666;
+            --accent: #FFFFFF;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            margin: 0;
+            cursor: crosshair; 
+        }
+
+        .mono {
+            font-family: 'Space Mono', monospace;
+        }
+
+        
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #000;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #333;
+        }
+
+        
+        .fade-in-up {
+            animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        
+        .bracket-corner {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            border-color: white;
+            border-style: solid;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            opacity: 0.5;
+        }
+
+        .active-card .bracket-corner {
+            opacity: 1;
+            width: 24px;
+            height: 24px;
+        }
+        
+        
+        .bl-tl { top: 0; left: 0; border-width: 1px 0 0 1px; }
+        
+        .bl-tr { top: 0; right: 0; border-width: 1px 1px 0 0; }
+        
+        .bl-br { bottom: 0; right: 0; border-width: 0 1px 1px 0; }
+        
+        .bl-bl { bottom: 0; left: 0; border-width: 0 0 1px 1px; }
+
+        
+        .meta-label {
+            font-size: 0.75rem;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+        }
+
+        
+        .hero-title {
+            font-size: clamp(3rem, 8vw, 6rem);
+            line-height: 0.9;
+            letter-spacing: -0.02em;
+            font-weight: 500;
+        }
+
+        
+        .section-container {
+            transition: opacity 0.5s ease;
+        }
+        .section-container:hover {
+            opacity: 1;
+        }
+        .dimmed {
+            opacity: 0.3;
+        }
+
+        
+        #hero-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        
+        .btn-primary {
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.2);
+            color: white;
+            padding: 12px 24px;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.8rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            position: relative;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .btn-primary:hover {
+            background: white;
+            color: black;
+            border-color: white;
+        }
+
+        .btn-primary::before, .btn-primary::after {
+            content: '';
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: white;
+            transition: all 0.3s ease;
+            opacity: 0;
+        }
+        
+        .btn-primary:hover::before { opacity: 1; top: -2px; left: -2px; }
+        .btn-primary:hover::after { opacity: 1; bottom: -2px; right: -2px; }
+
+    </style>
+</head>
+<body class="selection:bg-white selection:text-black" vid="8">
+
+    
+    <nav class="fixed top-0 left-0 w-full z-50 px-6 py-6 flex justify-between items-center mix-blend-difference" vid="9">
+        <div class="flex items-center gap-4" vid="10">
+            <span class="mono text-xs text-white opacity-60" vid="11">[ RETUNE V.1.0 ]</span>
+        </div>
+        <div class="flex items-center gap-8" vid="12">
+            <span class="mono text-xs text-white opacity-60 hidden md:block" vid="13">SYSTEM: LISTENING</span>
+            <button class="btn-primary" vid="14">Initialize Download</button>
+        </div>
+    </nav>
+
+    
+    <header class="relative w-full h-screen flex flex-col justify-end p-6 md:p-12 overflow-hidden" vid="15">
+        <div id="hero-canvas" vid="16"></div>
+        
+        <div class="relative z-10 w-full max-w-7xl mx-auto mb-12 grid grid-cols-1 md:grid-cols-12 gap-8 items-end" vid="17">
+            <div class="md:col-span-8 fade-in-up" style="animation-delay: 0.2s;" vid="18">
+                <div class="mono text-xs text-gray-500 mb-4 flex items-center gap-2" vid="19">
+                    <span vid="20">[ 00 ]</span>
+                    <div class="h-[1px] w-12 bg-gray-800" vid="21"></div>
+                    <span vid="22">SIGNAL DETECTED</span>
+                </div>
+                <h1 class="hero-title text-white" vid="23">
+                    Structure<br vid="24">
+                    from the noise.
+                </h1>
+            </div>
+            <div class="md:col-span-4 fade-in-up flex flex-col gap-6" style="animation-delay: 0.4s;" vid="25">
+                <p class="text-gray-400 text-lg leading-relaxed max-w-sm" vid="26">
+                    Retune listens to the chaotic stream of live audio and crystallizes it into "brain tattoos"—permanent, structured insights.
+                </p>
+                <div class="mono text-xs text-gray-600" vid="27">
+                    SCROLL TO CALIBRATE ↓
+                </div>
+            </div>
+        </div>
+
+        
+        <div class="absolute top-6 left-6 w-4 h-4 border-t border-l border-white opacity-30" vid="28"></div>
+        <div class="absolute top-6 right-6 w-4 h-4 border-t border-r border-white opacity-30" vid="29"></div>
+        <div class="absolute bottom-6 left-6 w-4 h-4 border-b border-l border-white opacity-30" vid="30"></div>
+        <div class="absolute bottom-6 right-6 w-4 h-4 border-b border-r border-white opacity-30" vid="31"></div>
+    </header>
+
+    
+    <main class="w-full relative z-10 bg-[#050505]" vid="32">
+        
+        
+        <section class="min-h-[80vh] w-full flex items-center justify-center p-6 md:p-12 border-t border-[#1a1a1a]" vid="33">
+            <div class="w-full max-w-7xl grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-24 items-center group section-container" vid="34">
+                
+                
+                <div class="order-2 md:order-1" vid="35">
+                    <div class="mono text-xs text-gray-500 mb-6 flex items-center gap-2" vid="36">
+                        <span vid="37">[ 01 ]</span>
+                        <div class="h-[1px] w-8 bg-gray-800" vid="38"></div>
+                        <span vid="39">LIVE INGESTION</span>
+                    </div>
+                    <h2 class="text-4xl md:text-5xl font-normal text-white mb-6 tracking-tight" vid="40">
+                        Fluid thought,<br vid="41">solidified.
+                    </h2>
+                    <p class="text-gray-400 text-lg leading-relaxed mb-8 max-w-md" vid="42">
+                        As the lecture unfolds, Retune captures the ephemeral. Words are not just transcribed; they are weighed, measured, and locked into place.
+                    </p>
+                    <ul class="mono text-xs text-gray-500 space-y-2 border-l border-gray-800 pl-4" vid="43">
+                        <li class="flex justify-between w-48" vid="44"><span vid="45">LATENCY</span> <span vid="46">12ms</span></li>
+                        <li class="flex justify-between w-48" vid="47"><span vid="48">ACCURACY</span> <span vid="49">99.4%</span></li>
+                        <li class="flex justify-between w-48" vid="50"><span vid="51">MODE</span> <span vid="52">ACTIVE</span></li>
+                    </ul>
+                </div>
+
+                
+                <div class="order-1 md:order-2 relative aspect-video bg-[#0a0a0a] active-card group-hover:bg-[#0e0e0e] transition-colors duration-500 flex items-center justify-center overflow-hidden" vid="53">
+                    
+                    <div class="bracket-corner bl-tl" vid="54"></div>
+                    <div class="bracket-corner bl-tr" vid="55"></div>
+                    <div class="bracket-corner bl-br" vid="56"></div>
+                    <div class="bracket-corner bl-bl" vid="57"></div>
+
+                    
+                    <canvas id="waveform-canvas" class="w-full h-full opacity-60" vid="58"></canvas>
+                    
+                    <div class="absolute bottom-4 left-4 mono text-[10px] text-gray-500" vid="59">
+                        INPUT_SOURCE: MIC_ARRAY_01
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        
+        <section class="min-h-[80vh] w-full flex items-center justify-center p-6 md:p-12 border-t border-[#1a1a1a]" vid="60">
+            <div class="w-full max-w-7xl grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-24 items-center section-container group" vid="61">
+                
+                
+                <div class="relative aspect-video bg-[#0a0a0a] active-card flex items-center justify-center overflow-hidden group-hover:bg-[#0e0e0e] transition-colors duration-500" vid="62">
+                     
+                     <div class="bracket-corner bl-tl" vid="63"></div>
+                     <div class="bracket-corner bl-tr" vid="64"></div>
+                     <div class="bracket-corner bl-br" vid="65"></div>
+                     <div class="bracket-corner bl-bl" vid="66"></div>
+
+                     
+                     <div id="nodes-container" class="relative w-full h-full" vid="67"></div>
+
+                     <div class="absolute top-4 right-4 mono text-[10px] text-gray-500 text-right" vid="68">
+                        STATUS: MAPPING<br vid="69">NODES: 4,021
+                    </div>
+                </div>
+
+                
+                <div vid="70">
+                    <div class="mono text-xs text-gray-500 mb-6 flex items-center gap-2" vid="71">
+                        <span vid="72">[ 02 ]</span>
+                        <div class="h-[1px] w-8 bg-gray-800" vid="73"></div>
+                        <span vid="74">CONTEXT ENGINE</span>
+                    </div>
+                    <h2 class="text-4xl md:text-5xl font-normal text-white mb-6 tracking-tight" vid="75">
+                        Gap detection &amp;<br vid="76">Autofill.
+                    </h2>
+                    <p class="text-gray-400 text-lg leading-relaxed mb-8 max-w-md" vid="77">
+                        Retune identifies what you missed. It scans your existing knowledge graph, finds the void, and generates the bridge instantly.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        
+        <section class="min-h-[80vh] w-full flex items-center justify-center p-6 md:p-12 border-t border-[#1a1a1a]" vid="78">
+            <div class="w-full max-w-7xl grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-24 items-center section-container group" vid="79">
+                
+                
+                <div class="order-2 md:order-1" vid="80">
+                    <div class="mono text-xs text-gray-500 mb-6 flex items-center gap-2" vid="81">
+                        <span vid="82">[ 03 ]</span>
+                        <div class="h-[1px] w-8 bg-gray-800" vid="83"></div>
+                        <span vid="84">SYNTHESIS</span>
+                    </div>
+                    <h2 class="text-4xl md:text-5xl font-normal text-white mb-6 tracking-tight" vid="85">
+                        Brain Tattoos.
+                    </h2>
+                    <p class="text-gray-400 text-lg leading-relaxed mb-8 max-w-md" vid="86">
+                        Not notes. Insights. Compressed, high-fidelity concepts delivered directly to your long-term memory stack.
+                    </p>
+                    <button class="text-white border-b border-white pb-1 hover:opacity-70 transition-opacity mono text-xs tracking-widest uppercase" vid="87">
+                        View Sample Output
+                    </button>
+                </div>
+
+                
+                <div class="order-1 md:order-2 relative aspect-video bg-[#0a0a0a] active-card flex items-center justify-center overflow-hidden group-hover:bg-[#0e0e0e] transition-colors duration-500" vid="88">
+                    
+                    <div class="bracket-corner bl-tl" vid="89"></div>
+                    <div class="bracket-corner bl-tr" vid="90"></div>
+                    <div class="bracket-corner bl-br" vid="91"></div>
+                    <div class="bracket-corner bl-bl" vid="92"></div>
+
+                    
+                    <div class="text-center" vid="93">
+                        <div id="scramble-text" class="text-3xl text-white font-light tracking-widest opacity-80" vid="94">
+                            CONFUSION
+                        </div>
+                        <div class="w-[1px] h-12 bg-white/20 mx-auto my-4" vid="95"></div>
+                        <div class="mono text-[10px] text-gray-600" vid="96">RESOLVING...</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        
+        <footer class="w-full py-32 px-6 border-t border-[#1a1a1a] flex flex-col items-center justify-center text-center" vid="97">
+            <h2 class="text-5xl md:text-7xl font-medium text-white mb-12 tracking-tighter" vid="98">
+                Calibrate your feed.
+            </h2>
+            <div class="flex flex-col items-center gap-6" vid="99">
+                <button class="btn-primary scale-125" vid="100">
+                    Download Retune 1.0
+                </button>
+                <span class="mono text-[10px] text-gray-600 uppercase mt-4" vid="101">
+                    MacOS 12+ / Windows 11<br vid="102">
+                    Free during beta
+                </span>
+            </div>
+            <div class="mt-24 mono text-[10px] text-gray-700 w-full max-w-7xl flex justify-between" vid="103">
+                <span vid="104">© 2024 RETUNE LABS</span>
+                <span vid="105">[ SYSTEM IDLE ]</span>
+            </div>
+        </footer>
+
+    </main>
+
+    <script vid="106">
+        
+        const initHero = () => {
+            const container = document.getElementById('hero-canvas');
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
+            const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+            
+            renderer.setSize(container.clientWidth, container.clientHeight);
+            container.appendChild(renderer.domElement);
+
+            
+            const geometry = new THREE.BufferGeometry();
+            const count = 1500;
+            const positions = new Float32Array(count * 3);
+            
+            for(let i = 0; i < count * 3; i++) {
+                positions[i] = (Math.random() - 0.5) * 20;
+            }
+            
+            geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+            
+            const material = new THREE.PointsMaterial({
+                size: 0.03,
+                color: 0xffffff,
+                transparent: true,
+                opacity: 0.8
+            });
+            
+            const particles = new THREE.Points(geometry, material);
+            scene.add(particles);
+            
+            camera.position.z = 5;
+
+            let time = 0;
+
+            const animate = () => {
+                requestAnimationFrame(animate);
+                time += 0.002;
+                
+                const positions = particles.geometry.attributes.position.array;
+                
+                
+                for(let i = 0; i < count; i++) {
+                    const i3 = i * 3;
+                    
+                    positions[i3 + 1] += Math.sin(time + positions[i3]) * 0.002;
+                    
+                    
+                    particles.rotation.y = time * 0.2;
+                    particles.rotation.x = time * 0.1;
+                }
+                
+                particles.geometry.attributes.position.needsUpdate = true;
+                renderer.render(scene, camera);
+            };
+            animate();
+
+            
+            window.addEventListener('resize', () => {
+                camera.aspect = container.clientWidth / container.clientHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(container.clientWidth, container.clientHeight);
+            });
+        };
+
+        
+        const initWaveform = () => {
+            const canvas = document.getElementById('waveform-canvas');
+            const ctx = canvas.getContext('2d');
+            
+            const resize = () => {
+                canvas.width = canvas.parentElement.offsetWidth;
+                canvas.height = canvas.parentElement.offsetHeight;
+            };
+            resize();
+            window.addEventListener('resize', resize);
+
+            let offset = 0;
+            
+            const draw = () => {
+                ctx.fillStyle = '#0a0a0a';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                
+                ctx.strokeStyle = '#333';
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                
+                const cy = canvas.height / 2;
+                
+                for(let i = 0; i < canvas.width; i += 5) {
+                    const amplitude = Math.sin(i * 0.02 + offset) * (Math.sin(offset * 0.5) * 40);
+                    ctx.moveTo(i, cy - amplitude);
+                    ctx.lineTo(i, cy + amplitude);
+                }
+                
+                ctx.stroke();
+                
+                
+                
+                ctx.fillStyle = '#fff';
+                for(let i = 0; i < 5; i++) {
+                    const rx = Math.random() * canvas.width;
+                    const ry = cy + (Math.random() - 0.5) * 10;
+                    ctx.fillRect(rx, ry, 2, 2);
+                }
+
+                offset += 0.05;
+                requestAnimationFrame(draw);
+            };
+            draw();
+        };
+
+        
+        const initScramble = () => {
+            const el = document.getElementById('scramble-text');
+            const words = ['CHAOS', 'NOISE', 'STATIC', 'CLARITY'];
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+            let index = 0;
+            
+            const scramble = (targetText) => {
+                let iterations = 0;
+                const interval = setInterval(() => {
+                    el.innerText = targetText.split('')
+                        .map((letter, index) => {
+                            if(index < iterations) return targetText[index];
+                            return chars[Math.floor(Math.random() * 36)];
+                        })
+                        .join('');
+                    
+                    if(iterations >= targetText.length) clearInterval(interval);
+                    iterations += 1/3;
+                }, 30);
+            };
+
+            setInterval(() => {
+                index = (index + 1) % words.length;
+                scramble(words[index]);
+            }, 3000);
+        };
+
+        
+        const initNodes = () => {
+            const container = document.getElementById('nodes-container');
+            const nodeCount = 8;
+            
+            
+            for (let i = 0; i < nodeCount; i++) {
+                const node = document.createElement('div');
+                node.className = 'absolute w-2 h-2 bg-gray-600 rounded-full transition-all duration-1000';
+                node.style.top = Math.random() * 80 + 10 + '%';
+                node.style.left = Math.random() * 80 + 10 + '%';
+                container.appendChild(node);
+                
+                
+                setInterval(() => {
+                    node.style.top = Math.random() * 80 + 10 + '%';
+                    node.style.left = Math.random() * 80 + 10 + '%';
+                    
+                    if(Math.random() > 0.7) {
+                        node.style.backgroundColor = '#fff';
+                        node.style.boxShadow = '0 0 10px rgba(255,255,255,0.5)';
+                        setTimeout(() => {
+                            node.style.backgroundColor = '#4b5563';
+                            node.style.boxShadow = 'none';
+                        }, 500);
+                    }
+                }, 2000 + Math.random() * 1000);
+            }
+        };
+
+        
+        window.onload = () => {
+            initHero();
+            initWaveform();
+            initScramble();
+            initNodes();
+
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.remove('dimmed');
+                    } else {
+                        entry.target.classList.add('dimmed');
+                    }
+                });
+            }, { threshold: 0.5 });
+
+            document.querySelectorAll('.section-container').forEach(sec => {
+                observer.observe(sec);
+            });
+        };
+
+    </script>
+
+</body></html>

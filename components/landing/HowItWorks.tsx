@@ -1,97 +1,61 @@
-import { Upload, Cog, CheckCircle, Download } from "lucide-react";
-import ShinyText from "@/components/ui/ShinyText";
-
-const steps = [
-    {
-        number: "01",
-        icon: Upload,
-        title: "Upload Report",
-        description: "Drag and drop your PDF/DOCX project report. We validate file type and size instantly.",
-    },
-    {
-        number: "02",
-        icon: Cog,
-        title: "AI Analysis",
-        description: "Our system validates structure, formatting, grammar, and academic quality in real-time.",
-    },
-    {
-        number: "03",
-        icon: CheckCircle,
-        title: "Review Results",
-        description: "Get detailed compliance scores, categorized violations, and AI-generated improvement suggestions.",
-    },
-    {
-        number: "04",
-        icon: Download,
-        title: "Download Summary",
-        description: "Export a comprehensive analysis report ready for faculty review and final submission.",
-    },
-];
+import { Upload, Cpu, CheckCircle } from "lucide-react";
 
 export function HowItWorks() {
     return (
-        <section id="how-it-works" className="py-24 px-6 bg-[rgb(var(--card))]">
-            <div className="max-w-7xl mx-auto">
+        <section id="how-it-works" className="py-24 px-6 bg-[#030308] relative overflow-hidden">
+            <div className="max-w-7xl mx-auto relative z-10 w-full px-4 sm:px-6">
+
                 {/* Section Header */}
-                <div className="text-center space-y-4 mb-16">
-                    <h2 className="text-4xl md:text-5xl font-bold">
-                        <ShinyText color="#e5e7eb" shineColor="#ff80ee" speed={3}>
-                            It takes
-                        </ShinyText>{" "}
-                        <span className="gradient-text">less than 1 minute</span>
-                        <br />
-                        <ShinyText color="#e5e7eb" shineColor="#ff80ee" speed={3}>
-                            to create validations
-                        </ShinyText>
+                <div className="text-center mb-16 animate-fade-in">
+                    <h2 className="text-4xl md:text-[2.75rem] font-bold tracking-tight text-white mb-2">
+                        3 Steps
                     </h2>
-                    <p className="text-lg text-foreground/60 max-w-2xl mx-auto">
-                        Our streamlined 4-step process ensures fast, accurate, and comprehensive report analysis.
-                    </p>
                 </div>
 
-                {/* Steps */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 relative">
-                    {steps.map((step, index) => (
-                        <div key={index} className="relative group">
-                            {/* Connector Line (Desktop) */}
-                            {index < steps.length - 1 && (
-                                <div className="hidden lg:block absolute top-8 left-1/2 w-full h-[2px] bg-gradient-to-r from-blue-500/50 to-transparent z-0" />
-                            )}
-                            {/* Hover effect */}
-                            <div className="absolute -inset-2 bg-blue-500/20 rounded-3xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity -z-10" />
+                {/* Steps Grid */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
 
-                            {/* Step Card */}
-                            <div className="space-y-4 text-center relative z-10">
-                                {/* Number Badge */}
-                                <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-purple-600 to-pink-600 text-white font-bold text-xl shadow-[0_0_20px_rgba(236,72,153,0.3)] relative z-10 bg-background">
-                                    {step.number}
-                                </div>
-
-                                {/* Icon */}
-                                <div className="flex justify-center">
-                                    <div className="w-12 h-12 rounded-2xl bg-purple-500/10 flex items-center justify-center border border-purple-500/20 group-hover:border-pink-500/50 transition-colors">
-                                        <step.icon className="w-6 h-6 text-purple-400 group-hover:text-pink-400 transition-colors" />
-                                    </div>
-                                </div>
-
-                                {/* Content */}
-                                <div className="space-y-2">
-                                    <h3 className="text-xl font-semibold">{step.title}</h3>
-                                    <p className="text-sm text-foreground/60 leading-relaxed">
-                                        {step.description}
-                                    </p>
-                                </div>
-                            </div>
+                    {/* Step 1 */}
+                    <div className="bg-[#0a0a0f]/80 backdrop-blur-xl border border-white/10 hover:border-[#ff5e00]/30 transition-colors duration-300 rounded-2xl p-8 flex flex-col items-start gap-6 group hover:shadow-[0_10px_40px_rgba(255,94,0,0.1)]">
+                        <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#1a1a1f] to-[#0a0a0f] border border-white/5 flex items-center justify-center shrink-0 mb-2 group-hover:scale-110 transition-transform duration-300 shadow-[inset_0_1px_1px_rgba(255,255,255,0.1)]">
+                            <Upload className="w-5 h-5 text-[#ff5e00]" strokeWidth={1.5} />
                         </div>
-                    ))}
-                </div>
-
-                {/* Timeline */}
-                <div className="mt-16 text-center space-y-4">
-                    <div className="inline-flex items-center gap-4 glass-card px-8 py-4 rounded-full">
-                        <div className="text-sm text-foreground/60">Average Processing Time:</div>
-                        <div className="text-2xl font-bold gradient-text">~90 seconds</div>
+                        <div className="space-y-2">
+                            <h3 className="text-xl font-bold text-white">1. Upload</h3>
+                            <p className="text-sm text-neutral-400 leading-relaxed font-light">
+                                Drop in your paper, PDF or Word format here.
+                            </p>
+                        </div>
                     </div>
+
+                    {/* Step 2 */}
+                    <div className="bg-[#0a0a0f]/80 backdrop-blur-xl border border-white/10 hover:border-[#00f3ff]/30 transition-colors duration-300 rounded-2xl p-8 flex flex-col items-start gap-6 group hover:shadow-[0_10px_40px_rgba(0,243,255,0.1)]">
+                        <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#1a1a1f] to-[#0a0a0f] border border-white/5 flex items-center justify-center shrink-0 mb-2 group-hover:scale-110 transition-transform duration-300 shadow-[inset_0_1px_1px_rgba(255,255,255,0.1)] relative">
+                            {/* Little decorative tag absolute positioned like in the image */}
+                            <div className="absolute -top-1 -right-1 w-3 h-3 bg-[#00f3ff]/20 border border-[#00f3ff]/50 rounded text-[6px] flex items-center justify-center text-[#00f3ff]">AI</div>
+                            <Cpu className="w-5 h-5 text-[#00f3ff]" strokeWidth={1.5} />
+                        </div>
+                        <div className="space-y-2">
+                            <h3 className="text-xl font-bold text-white">2. AI Scan</h3>
+                            <p className="text-sm text-neutral-400 leading-relaxed font-light">
+                                Our bespoke engine cross-checks with 1500+ rules live.
+                            </p>
+                        </div>
+                    </div>
+
+                    {/* Step 3 */}
+                    <div className="bg-[#0a0a0f]/80 backdrop-blur-xl border border-white/10 hover:border-[#bf00ff]/30 transition-colors duration-300 rounded-2xl p-8 flex flex-col items-start gap-6 group hover:shadow-[0_10px_40px_rgba(191,0,255,0.1)]">
+                        <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#1a1a1f] to-[#0a0a0f] border border-white/5 flex items-center justify-center shrink-0 mb-2 group-hover:scale-110 transition-transform duration-300 shadow-[inset_0_1px_1px_rgba(255,255,255,0.1)]">
+                            <CheckCircle className="w-5 h-5 text-[#bf00ff]" strokeWidth={1.5} />
+                        </div>
+                        <div className="space-y-2">
+                            <h3 className="text-xl font-bold text-white">3. Fix & Export</h3>
+                            <p className="text-sm text-neutral-400 leading-relaxed font-light">
+                                Customize metrics and expert export your flawless draft.
+                            </p>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </section>

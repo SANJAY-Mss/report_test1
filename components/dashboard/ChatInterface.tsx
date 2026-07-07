@@ -76,33 +76,35 @@ export function ChatInterface({ reportId }: { reportId: string }) {
             {/* Floating Toggle Button */}
             <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="fixed bottom-6 right-6 p-4 bg-gradient-to-r from-purple-600 to-pink-600 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 z-50 group"
+                className="fixed bottom-6 right-6 p-4 bg-white hover:bg-gray-200 transition-all duration-300 z-50 group"
             >
-                <MessageSquare className="w-6 h-6 text-white group-hover:scale-110 transition-transform" />
+                <MessageSquare className="w-6 h-6 text-black group-hover:scale-110 transition-transform" />
             </button>
 
             {/* Chat Window */}
             {isOpen && (
-                <div className="fixed bottom-24 right-6 w-96 h-[600px] glass-card border border-white/10 rounded-2xl shadow-2xl flex flex-col z-50 animate-slide-up bg-black/80 backdrop-blur-xl">
+                <div className="fixed bottom-24 right-6 w-96 h-[600px] bg-[#0a0a0a] border border-[#1a1a1a] flex flex-col z-50 animate-in slide-in-from-bottom-5">
                     {/* Header */}
-                    <div className="p-4 border-b border-white/10 flex items-center justify-between bg-white/5 rounded-t-2xl">
-                        <div className="flex items-center gap-2">
-                            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-600 to-cyan-600 flex items-center justify-center shrink-0">
+                    <div className="p-4 border-b border-[#1a1a1a] flex items-center justify-between bg-[#050505]">
+                        <div className="flex items-center gap-3">
+                            <div className="w-10 h-10 bg-white/5 flex items-center justify-center shrink-0 border border-white/10">
                                 <Bot className="w-5 h-5 text-white" />
                             </div>
                             <div>
-                                <h3 className="font-bold text-white">Report Assistant</h3>
-                                <p className="text-xs text-white/60">Ask about your report</p>
+                                <h3 className="font-bold text-white leading-tight mono">Report Assistant</h3>
+                                <p className="text-xs text-gray-500 font-medium mono">Ask about your report</p>
                             </div>
                         </div>
                     </div>
 
                     {/* Messages */}
-                    <div className="flex-1 overflow-y-auto p-4 space-y-4 scrollbar-hide">
+                    <div className="flex-1 overflow-y-auto p-4 space-y-4 custom-scrollbar bg-[#050505]">
                         {messages.length === 0 && (
-                            <div className="text-center text-white/40 mt-10">
-                                <Bot className="w-12 h-12 mx-auto mb-2 opacity-50" />
-                                <p className="text-sm">Hi! Ask me anything about your report.</p>
+                            <div className="text-center text-gray-500 mt-12">
+                                <div className="w-16 h-16 bg-white/5 flex items-center justify-center mx-auto mb-4 border border-white/10">
+                                    <Bot className="w-8 h-8 text-gray-500" />
+                                </div>
+                                <p className="text-sm font-medium mono">Hi! Ask me anything about your report.</p>
                             </div>
                         )}
                         {messages.map((msg) => (
@@ -111,9 +113,9 @@ export function ChatInterface({ reportId }: { reportId: string }) {
                                 className={`flex ${msg.role === "USER" ? "justify-end" : "justify-start"}`}
                             >
                                 <div
-                                    className={`max-w-[80%] p-3 rounded-2xl text-sm ${msg.role === "USER"
-                                        ? "bg-blue-600 text-white rounded-br-none"
-                                        : "bg-white/10 text-gray-200 rounded-bl-none border border-white/5"
+                                    className={`max-w-[80%] p-3.5 text-sm ${msg.role === "USER"
+                                        ? "bg-white text-black"
+                                        : "bg-[#0a0a0a] text-gray-300 border border-[#1a1a1a]"
                                         }`}
                                 >
                                     {msg.content}
@@ -122,8 +124,9 @@ export function ChatInterface({ reportId }: { reportId: string }) {
                         ))}
                         {isLoading && (
                             <div className="flex justify-start">
-                                <div className="bg-white/10 p-3 rounded-2xl rounded-bl-none border border-white/5">
-                                    <Loader2 className="w-4 h-4 animate-spin text-blue-400" />
+                                <div className="bg-[#0a0a0a] p-3.5 border border-[#1a1a1a] flex items-center gap-2">
+                                    <Loader2 className="w-4 h-4 animate-spin text-white" />
+                                    <span className="text-xs text-gray-500 font-semibold uppercase tracking-wider mono">Thinking...</span>
                                 </div>
                             </div>
                         )}
@@ -131,21 +134,21 @@ export function ChatInterface({ reportId }: { reportId: string }) {
                     </div>
 
                     {/* Input */}
-                    <form onSubmit={sendMessage} className="p-4 border-t border-white/10 bg-white/5 rounded-b-2xl">
-                        <div className="flex items-center gap-2">
+                    <form onSubmit={sendMessage} className="p-4 border-t border-[#1a1a1a] bg-[#0a0a0a]">
+                        <div className="flex items-center gap-2 relative">
                             <input
                                 type="text"
                                 value={input}
                                 onChange={(e) => setInput(e.target.value)}
                                 placeholder="Type your question..."
-                                className="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-sm text-white placeholder-white/40 focus:outline-none focus:border-blue-500 transition-colors"
+                                className="flex-1 bg-[#050505] border border-[#1a1a1a] pl-4 pr-12 py-3 text-sm text-white placeholder:text-gray-600 focus:outline-none focus:border-gray-500 transition-all mono"
                             />
                             <button
                                 type="submit"
                                 disabled={isLoading || !input.trim()}
-                                className="p-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                                className="absolute right-1.5 top-1/2 -translate-y-1/2 p-2 bg-white text-black hover:bg-gray-200 transition-colors disabled:opacity-50"
                             >
-                                <Send className="w-5 h-5" />
+                                <Send className="w-4 h-4" />
                             </button>
                         </div>
                     </form>

@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import { DashboardShell } from "@/components/dashboard/DashboardShell";
-import { Bot, Send, User, Sparkles, AlertCircle } from "lucide-react";
+import { Bot, Send, User, Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface Message {
@@ -12,7 +12,7 @@ interface Message {
 
 export default function ChatPage() {
     const [messages, setMessages] = useState<Message[]>([
-        { role: "assistant", content: "Hello! I'm your ReportGuard AI assistant. I can help you with formatting guidelines, grammar tips, or general academic writing questions. How can I assist you today?" }
+        { role: "assistant", content: "Hello! I'm your Project Tracker AI assistant. I can help you with formatting guidelines, grammar tips, or general academic writing questions. How can I assist you today?" }
     ]);
     const [input, setInput] = useState("");
     const [loading, setLoading] = useState(false);
@@ -67,76 +67,71 @@ export default function ChatPage() {
 
     return (
         <DashboardShell>
-            <div className="flex flex-col h-[calc(100vh-8rem)]">
-                <div className="flex items-center gap-3 mb-6">
-                    <div className="p-3 bg-blue-500/10 rounded-xl text-blue-400">
-                        <Bot className="w-6 h-6" />
-                    </div>
-                    <div>
-                        <h1 className="text-2xl font-bold">AI Chat Assistant</h1>
-                        <p className="text-sm text-white/40">Powered by Gemini AI</p>
-                    </div>
+            <div className="flex flex-col h-[calc(100vh-8rem)] max-w-5xl mx-auto space-y-6">
+                <div>
+                    <h1 className="text-2xl font-bold text-white leading-tight">AI Chat Assistant</h1>
+                    <p className="text-sm font-medium text-gray-500 mt-1 mono">Powered by Gemini AI</p>
                 </div>
 
-                <div className="flex-1 bg-[#0a0a0f]/40 border border-white/5 rounded-2xl overflow-hidden flex flex-col relative">
+                <div className="flex-1 bg-[#0a0a0a] border border-[#1a1a1a] relative group flex flex-col overflow-hidden">
                     {/* Chat Messages */}
                     <div
                         ref={scrollRef}
-                        className="flex-1 overflow-y-auto p-4 space-y-6 scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent"
+                        className="flex-1 overflow-y-auto p-6 space-y-8 custom-scrollbar bg-[#050505] relative z-10"
                     >
                         {messages.map((msg, i) => (
-                            <div key={i} className={cn("flex gap-4 max-w-3xl", msg.role === "user" ? "ml-auto flex-row-reverse" : "")}>
+                            <div key={i} className={cn("flex gap-6 max-w-4xl", msg.role === "user" ? "ml-auto flex-row-reverse" : "")}>
                                 <div className={cn(
-                                    "w-8 h-8 rounded-full flex items-center justify-center shrink-0",
-                                    msg.role === "user" ? "bg-purple-500/20 text-purple-400" : "bg-blue-500/20 text-blue-400"
+                                    "w-10 h-10 flex items-center justify-center shrink-0 border",
+                                    msg.role === "user" ? "bg-white border-white text-black" : "bg-white/5 border-white/10 text-white"
                                 )}>
-                                    {msg.role === "user" ? <User className="w-4 h-4" /> : <Bot className="w-4 h-4" />}
+                                    {msg.role === "user" ? <User className="w-5 h-5" /> : <Bot className="w-5 h-5" />}
                                 </div>
                                 <div className={cn(
-                                    "p-4 rounded-2xl text-sm leading-relaxed whitespace-pre-wrap",
+                                    "p-5 text-sm leading-relaxed whitespace-pre-wrap",
                                     msg.role === "user"
-                                        ? "bg-purple-500/10 text-white rounded-tr-none border border-purple-500/20"
-                                        : "bg-white/5 text-white/80 rounded-tl-none border border-white/10"
+                                        ? "bg-white text-black"
+                                        : "bg-[#0a0a0a] text-gray-300 border border-[#1a1a1a]"
                                 )}>
                                     {msg.content}
                                 </div>
                             </div>
                         ))}
                         {loading && (
-                            <div className="flex gap-4 max-w-3xl">
-                                <div className="w-8 h-8 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center shrink-0 animate-pulse">
-                                    <Sparkles className="w-4 h-4" />
+                            <div className="flex gap-6 max-w-4xl">
+                                <div className="w-10 h-10 bg-white/5 border border-white/10 text-white flex items-center justify-center shrink-0 animate-pulse">
+                                    <Sparkles className="w-5 h-5" />
                                 </div>
-                                <div className="p-4 rounded-2xl bg-white/5 text-white/80 rounded-tl-none border border-white/10 flex items-center gap-2">
-                                    <span className="w-2 h-2 bg-blue-400 rounded-full animate-bounce" />
-                                    <span className="w-2 h-2 bg-blue-400 rounded-full animate-bounce delay-100" />
-                                    <span className="w-2 h-2 bg-blue-400 rounded-full animate-bounce delay-200" />
+                                <div className="p-5 bg-[#0a0a0a] text-gray-500 border border-[#1a1a1a] flex items-center gap-2">
+                                    <span className="w-1.5 h-1.5 bg-gray-500 rounded-full animate-bounce" />
+                                    <span className="w-1.5 h-1.5 bg-gray-500 rounded-full animate-bounce delay-100" />
+                                    <span className="w-1.5 h-1.5 bg-gray-500 rounded-full animate-bounce delay-200" />
                                 </div>
                             </div>
                         )}
                     </div>
 
                     {/* Input Area */}
-                    <div className="p-4 bg-[#0a0a0f] border-t border-white/10">
-                        <div className="relative max-w-4xl mx-auto">
+                    <div className="p-6 border-t border-[#1a1a1a] bg-[#0a0a0a] relative z-10">
+                        <div className="relative max-w-5xl mx-auto flex items-end gap-4">
                             <textarea
                                 value={input}
                                 onChange={(e) => setInput(e.target.value)}
                                 onKeyDown={handleKeyDown}
-                                placeholder="Ask about report formatting, grammar rules, or general questions..."
-                                className="w-full bg-white/5 border border-white/10 rounded-xl py-3 pl-4 pr-12 text-sm text-white placeholder:text-white/20 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500/50 resize-none min-h-[50px] max-h-[150px]"
+                                placeholder="Ask about report formatting or grammar rules..."
+                                className="w-full bg-[#050505] border border-[#1a1a1a] py-4 pl-5 pr-14 text-sm text-white placeholder:text-gray-600 focus:outline-none focus:border-gray-500 resize-none min-h-[56px] max-h-[150px] transition-all mono"
                                 rows={1}
                             />
                             <button
                                 onClick={handleSend}
                                 disabled={!input.trim() || loading}
-                                className="absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-blue-600 hover:bg-blue-500 text-white rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                                className="absolute right-3 bottom-3 p-2.5 bg-white text-black hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                             >
                                 <Send className="w-4 h-4" />
                             </button>
                         </div>
-                        <p className="text-center text-xs text-white/20 mt-2">
-                            AI formatting advice may vary. Always verify with your institution's specific guidelines.
+                        <p className="text-center text-xs font-medium text-gray-600 mt-4 mono">
+                            Always verify with your institution's specific guidelines.
                         </p>
                     </div>
                 </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import { Search, Download, Plus, Bell } from "lucide-react";
+import { Search, Download, Bell } from "lucide-react";
 import Link from "next/link";
 import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
@@ -44,7 +44,6 @@ export function DashboardHeader({ searchQuery, setSearchQuery }: DashboardHeader
                 return;
             }
 
-            // Generate CSV
             const headers = ["ID", "Filename", "Status", "Score", "Date Uploaded"];
             const rows = data.reports.map((r: any) => [
                 r.id,
@@ -63,7 +62,7 @@ export function DashboardHeader({ searchQuery, setSearchQuery }: DashboardHeader
             const url = URL.createObjectURL(blob);
             const a = document.createElement("a");
             a.href = url;
-            a.download = `reportguard_export_${new Date().toISOString().split("T")[0]}.csv`;
+            a.download = `projecttracker_export_${new Date().toISOString().split("T")[0]}.csv`;
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
@@ -79,14 +78,14 @@ export function DashboardHeader({ searchQuery, setSearchQuery }: DashboardHeader
             {/* Search */}
             <div className="relative w-full md:w-96 group">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <Search className="h-4 w-4 text-white/40 group-focus-within:text-purple-400 transition-colors" />
+                    <Search className="h-4 w-4 text-gray-600 group-focus-within:text-white transition-colors" />
                 </div>
                 <input
                     type="text"
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
                     onKeyDown={handleSearch}
-                    className="block w-full pl-10 pr-3 py-2.5 border border-white/5 rounded-xl leading-5 bg-white/5 text-white placeholder-white/40 focus:outline-none focus:bg-white/10 focus:ring-1 focus:ring-purple-500/50 transition-all sm:text-sm"
+                    className="block w-full pl-10 pr-4 py-2.5 bg-[#0a0a0a] border border-[#1a1a1a] text-white placeholder:text-gray-600 focus:outline-none focus:border-gray-500 transition-all sm:text-sm mono"
                     placeholder="Search for reports..."
                 />
             </div>
@@ -95,58 +94,50 @@ export function DashboardHeader({ searchQuery, setSearchQuery }: DashboardHeader
             <div className="flex items-center gap-3 w-full md:w-auto">
                 <button
                     onClick={handleExport}
-                    className="flex items-center gap-2 px-4 py-2.5 text-sm font-medium text-white/70 bg-white/5 hover:bg-white/10 border border-white/5 rounded-xl transition-all"
+                    className="flex items-center gap-2 px-4 py-2.5 text-sm font-medium text-gray-400 bg-[#0a0a0a] border border-[#1a1a1a] hover:text-white hover:border-gray-500 transition-all mono text-xs tracking-wider uppercase"
                 >
                     <Download className="w-4 h-4" />
                     <span className="hidden sm:inline">Export Data</span>
                 </button>
 
-                <Link
-                    href="/dashboard/new"
-                    className="flex items-center gap-2 px-4 py-2.5 text-sm font-medium text-white bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 rounded-xl shadow-[0_0_15px_rgba(168,85,247,0.4)] transition-all"
-                >
-                    <Plus className="w-4 h-4" />
-                    <span>New Report</span>
-                </Link>
-
-                <div className="h-8 w-px bg-white/10 mx-1" />
+                <div className="h-8 w-px bg-[#1a1a1a] mx-1 hidden md:block" />
 
                 <div className="relative" ref={notifRef}>
                     <button
                         onClick={() => setShowNotifications(!showNotifications)}
-                        className="p-2.5 text-white/70 hover:text-white bg-white/5 hover:bg-white/10 rounded-xl transition-all relative"
+                        className="p-2.5 text-gray-500 hover:text-white bg-[#0a0a0a] border border-[#1a1a1a] hover:border-gray-500 transition-all relative"
                     >
                         <Bell className="w-5 h-5" />
-                        <span className="absolute top-2.5 right-2.5 w-2 h-2 bg-red-500 rounded-full border-2 border-[#0a0a0f]" />
+                        <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full" />
                     </button>
 
                     {showNotifications && (
-                        <div className="absolute right-0 mt-2 w-80 bg-[#12121a] border border-white/10 rounded-xl shadow-[0_0_40px_rgba(0,0,0,0.5)] z-50 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200">
-                            <div className="p-4 border-b border-white/10 flex justify-between items-center bg-[#1a1a24]">
-                                <h3 className="font-semibold text-white">Notifications</h3>
+                        <div className="absolute right-0 mt-2 w-80 bg-[#0a0a0a] border border-[#1a1a1a] z-50 overflow-hidden">
+                            <div className="p-4 border-b border-[#1a1a1a] flex justify-between items-center">
+                                <h3 className="font-semibold text-white text-sm mono">Notifications</h3>
                                 <button
                                     onClick={() => setShowNotifications(false)}
-                                    className="text-xs text-blue-400 hover:text-blue-300 transition-colors"
+                                    className="text-xs text-gray-500 hover:text-white font-medium transition-colors mono"
                                 >
                                     Mark all as read
                                 </button>
                             </div>
                             <div className="max-h-80 overflow-y-auto custom-scrollbar">
-                                <div className="p-4 border-b border-white/5 hover:bg-white/5 transition-colors cursor-pointer group">
+                                <div className="p-4 border-b border-[#1a1a1a] hover:bg-white/5 transition-colors cursor-pointer group">
                                     <div className="flex gap-3">
-                                        <div className="w-2 h-2 mt-1.5 rounded-full bg-blue-500 shrink-0 shadow-[0_0_8px_rgba(59,130,246,0.8)]" />
+                                        <div className="w-2 h-2 mt-1.5 bg-white rounded-full shrink-0" />
                                         <div>
-                                            <p className="text-sm text-white/90 group-hover:text-white transition-colors">Your report <span className="font-medium text-white">"AI_Ethics_Final.pdf"</span> was successfully analyzed.</p>
-                                            <p className="text-xs text-white/40 mt-1">2 hours ago</p>
+                                            <p className="text-sm text-gray-400 group-hover:text-gray-200 transition-colors">Your report <span className="font-medium text-white">&quot;AI_Ethics_Final.pdf&quot;</span> was successfully analyzed.</p>
+                                            <p className="text-xs text-gray-600 mt-1 font-medium mono">2 HOURS AGO</p>
                                         </div>
                                     </div>
                                 </div>
                                 <div className="p-4 hover:bg-white/5 transition-colors cursor-pointer group">
                                     <div className="flex gap-3">
-                                        <div className="w-2 h-2 mt-1.5 rounded-full bg-purple-500 shrink-0 shadow-[0_0_8px_rgba(168,85,247,0.8)]" />
+                                        <div className="w-2 h-2 mt-1.5 bg-white rounded-full shrink-0" />
                                         <div>
-                                            <p className="text-sm text-white/90 group-hover:text-white transition-colors">Welcome to ReportGuard! <span className="text-white">Try our new AI Chat feature</span> inside your reports.</p>
-                                            <p className="text-xs text-white/40 mt-1">1 day ago</p>
+                                            <p className="text-sm text-gray-400 group-hover:text-gray-200 transition-colors">Welcome to ReportGuard! <span className="font-medium text-white">Try our new AI Chat feature</span> inside your reports.</p>
+                                            <p className="text-xs text-gray-600 mt-1 font-medium mono">1 DAY AGO</p>
                                         </div>
                                     </div>
                                 </div>

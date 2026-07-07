@@ -15,7 +15,7 @@ export default function DemoPage() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
                     <div className="space-y-8 animate-fade-in">
                         <h1 className="text-4xl md:text-5xl font-bold leading-tight">
-                            See ReportGuard in <span className="gradient-text">Action</span>
+                            See Project Tracker in <span className="gradient-text">Action</span>
                         </h1>
                         <p className="text-xl text-foreground/70">
                             Book a personalized demo to see how we can help your institution streamline academic report validation.

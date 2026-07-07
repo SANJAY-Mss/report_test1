@@ -42,7 +42,7 @@ export async function POST(req: NextRequest) {
             // Use Gemini directly for general queries
             // Filter out the initial assistant greeting because Gemini history MUST start with 'user'
             const sanitizedHistory = history
-                ? history.filter((msg: any) => !(msg.role === 'assistant' && msg.content.includes("Hello! I'm your ReportGuard AI assistant")))
+                ? history.filter((msg: any) => !(msg.role === 'assistant' && msg.content.includes("Hello! I'm your Project Tracker AI assistant")))
                     .map((msg: any) => ({
                         role: msg.role === 'user' ? 'user' : 'model',
                         parts: [{ text: msg.content }],

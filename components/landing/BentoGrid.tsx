@@ -86,7 +86,7 @@ export const BentoCard = ({
                 }}
             />
             {/* Header Container */}
-            <div className="flex flex-1 w-full h-full min-h-[6rem] rounded-xl bg-gradient-to-br from-neutral-200 to-neutral-100 dark:from-neutral-900 dark:to-neutral-800 border border-transparent dark:border-white/[0.2] overflow-hidden relative z-10">
+            <div className="flex flex-1 w-full h-full min-h-[6rem] rounded-xl overflow-hidden relative z-10">
                 {header}
             </div>
 

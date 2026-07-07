@@ -13,7 +13,7 @@ export function Footer() {
                                 <Shield className="w-8 h-8 text-white" />
                             </div>
                             <span className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-600">
-                                ReportGuard
+                                Project Tracker
                             </span>
                         </div>
                         <p className="text-sm text-foreground/60">
@@ -38,7 +38,7 @@ export function Footer() {
                         <ul className="space-y-2 text-sm text-foreground/60">
                             <li><Link href="/features" className="hover:text-purple-500 transition-colors">Features</Link></li>
                             <li><Link href="/pricing" className="hover:text-purple-500 transition-colors">Pricing</Link></li>
-                            <li><Link href="/docs" className="hover:text-purple-500 transition-colors">Documentation</Link></li>
+                            <li><Link href="/dashboard" className="hover:text-purple-500 transition-colors">Dashboard</Link></li>
                             <li><Link href="/changelog" className="hover:text-purple-500 transition-colors">Changelog</Link></li>
                         </ul>
                     </div>
@@ -67,7 +67,7 @@ export function Footer() {
                 </div>
 
                 <div className="border-t border-white/10 pt-8 text-center text-sm text-foreground/60">
-                    <p>&copy; {new Date().getFullYear()} ReportGuard. All rights reserved.</p>
+                    <p>&copy; {new Date().getFullYear()} Project Tracker. All rights reserved.</p>
                 </div>
             </div>
         </footer>

@@ -59,42 +59,42 @@ export default function ArchivePage() {
         <DashboardShell>
             <div className="space-y-6">
                 <div className="flex items-center justify-between">
-                    <h1 className="text-2xl font-bold">Archived Reports</h1>
+                    <h1 className="text-2xl font-bold text-white leading-tight">Archived Reports</h1>
                     <div className="relative w-64 hidden md:block">
-                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/40" />
+                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-600" />
                         <input
                             type="text"
                             placeholder="Search archives..."
-                            className="w-full pl-10 pr-4 py-2 bg-white/5 border border-white/10 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
+                            className="w-full pl-10 pr-4 py-2.5 bg-[#0a0a0a] border border-[#1a1a1a] text-white placeholder:text-gray-600 text-sm focus:outline-none focus:border-gray-500 transition-all mono"
                         />
                     </div>
                 </div>
 
                 {loading ? (
                     <div className="flex justify-center py-20">
-                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
+                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white"></div>
                     </div>
                 ) : reports.length === 0 ? (
-                    <div className="flex flex-col items-center justify-center min-h-[40vh] text-center space-y-4 rounded-2xl border border-dashed border-white/10 bg-white/5">
-                        <div className="p-4 rounded-full bg-white/5 text-white/40">
-                            <Archive className="w-8 h-8" />
+                    <div className="flex flex-col items-center justify-center min-h-[40vh] text-center space-y-4 border-2 border-dashed border-[#2a2a2a] bg-[#0a0a0a]">
+                        <div className="w-16 h-16 bg-white/5 flex items-center justify-center">
+                            <Archive className="w-8 h-8 text-gray-500" />
                         </div>
                         <div>
-                            <h3 className="text-lg font-medium">No archived reports</h3>
-                            <p className="text-sm text-white/40">Reports you archive will appear here.</p>
+                            <h3 className="text-lg font-bold text-white leading-tight">No archived reports</h3>
+                            <p className="text-sm font-medium text-gray-500 mt-1">Reports you archive will appear here.</p>
                         </div>
                     </div>
                 ) : (
                     <div className="grid gap-4">
                         {reports.map((report) => (
-                            <div key={report.id} className="flex items-center justify-between p-4 rounded-xl bg-[#0a0a0f]/40 border border-white/5 hover:border-white/10 transition-colors group">
+                            <div key={report.id} className="flex items-center justify-between p-5 bg-[#0a0a0a] border border-[#1a1a1a] hover:border-[#2a2a2a] transition-all group">
                                 <Link href={`/dashboard/reports/${report.id}`} className="flex items-center gap-4 flex-1">
-                                    <div className="p-3 bg-blue-500/10 rounded-lg text-blue-400">
-                                        <FileText className="w-6 h-6" />
+                                    <div className="p-3 bg-white/5 border border-white/10 group-hover:bg-white/10 transition-colors">
+                                        <FileText className="w-6 h-6 text-white" />
                                     </div>
                                     <div>
-                                        <h3 className="font-medium text-white group-hover:text-blue-400 transition-colors">{report.filename}</h3>
-                                        <p className="text-xs text-white/40">
+                                        <h3 className="font-bold text-white group-hover:text-gray-300 transition-colors leading-tight">{report.filename}</h3>
+                                        <p className="text-sm font-medium text-gray-500 mt-0.5 mono">
                                             Archived on {new Date(report.uploadedAt).toLocaleDateString()} • Score: {report.analysis?.overallScore || 0}%
                                         </p>
                                     </div>
@@ -102,16 +102,16 @@ export default function ArchivePage() {
                                 <div className="flex items-center gap-2">
                                     <button
                                         onClick={() => handleUnarchive(report.id)}
-                                        className="p-2 text-white/40 hover:text-green-400 hover:bg-green-500/10 rounded-lg transition-colors"
+                                        className="p-2 text-gray-500 hover:text-green-400 hover:bg-green-500/10 transition-colors"
                                         title="Unarchive"
                                     >
-                                        <RotateCcw className="w-4 h-4" />
+                                        <RotateCcw className="w-5 h-5" />
                                     </button>
                                     <button
-                                        className="p-2 text-white/40 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-colors"
+                                        className="p-2 text-gray-500 hover:text-red-400 hover:bg-red-500/10 transition-colors"
                                         title="Delete Permanently"
                                     >
-                                        <Trash2 className="w-4 h-4" />
+                                        <Trash2 className="w-5 h-5" />
                                     </button>
                                 </div>
                             </div>

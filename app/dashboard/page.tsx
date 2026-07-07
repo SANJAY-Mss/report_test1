@@ -122,11 +122,11 @@ export default function DashboardPage() {
         activityTrend = 100;
     }
 
-    // Use Mock Data if the user is completely new (0 reports) so the charts look alive
-    const displayDailyData = reports.length === 0 ? [1, 3, 2, 5, 4, 7, 5] : dailyData;
-    const displayMonthlyData = reports.length === 0 ? [10, 15, 12, 28, 22, 35] : monthlyData;
-    const displayCurrentWeekCount = reports.length === 0 ? 27 : currentWeekCount;
-    const displayActivityTrend = reports.length === 0 ? 12 : activityTrend;
+    // Let charts reflect actual user data immediately, even if 0 items.
+    const displayDailyData = dailyData;
+    const displayMonthlyData = monthlyData;
+    const displayCurrentWeekCount = currentWeekCount;
+    const displayActivityTrend = activityTrend;
 
     const filteredReports = reports.filter(r =>
         r.filename.toLowerCase().includes(searchQuery.toLowerCase())

@@ -91,6 +91,10 @@ export async function analyzeTextWithGemini(
           - Eliminate Nominalization (Static Nouns + Weak Verbs).
       4. FORMATTING PROTOCOL: 
           - Identify any obvious formatting violations from the scanned text.
+      5. ANTI-HALLUCINATION PROTOCOL (CRITICAL):
+          - NEVER flag "Missing College Logo" (text parsers cannot see images).
+          - NEVER flag "Inconsistent spacing" in names or titles (it is a parsing artifact).
+          - Assume the College Logo is present. Do not mention it.
 
       CRITICAL REQUIREMENT: You MUST provide an EXHAUSTIVE list of every single issue found. Aim for 20+ issues if the document is flawed. Do not stop analyzing early. Read the entire document.
 

@@ -9,7 +9,7 @@ export default function Loading() {
                 <div className="absolute inset-4 border-4 border-t-cyan-500 rounded-full animate-spin-slow" />
             </div>
             <div className="mt-8 text-xl font-medium text-blue-400 animate-pulse">
-                Loading ReportGuard...
+                Loading Project Tracker...
             </div>
         </div>
     );

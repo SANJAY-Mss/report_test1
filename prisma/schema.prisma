@@ -3,8 +3,9 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 model User {
@@ -14,10 +15,27 @@ model User {
   password      String?
   image         String?
   role          String    @default("STUDENT")
+  scanCredits   Int       @default(0)
+  chatCredits   Int       @default(0)
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
   reports       Report[]
   chatSessions  ChatSession[]
+  payments      Payment[]
+}
+
+model Payment {
+  id                String   @id @default(cuid())
+  userId            String
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  razorpayOrderId   String   @unique
+  razorpayPaymentId String?
+  planName          String
+  amount            Int
+  scansAdded        Int
+  chatsAdded        Int
+  status            String   @default("CREATED")
+  createdAt         DateTime @default(now())
 }
 
 model Report {
@@ -43,11 +61,10 @@ model Analysis {
   grammarScore    Int
   overallScore    Int
   
-  // SQLite doesn't support Json/Enum well, using String and serialization
   violations      String   // JSON string
   suggestions     String   // JSON string
   metadata        String?  // JSON string
-  fullText        String?  // Store full document text for Chat context (SQLite handles large strings)
+  fullText        String?  // Store full document text for Chat context
 
   createdAt       DateTime @default(now())
 }
@@ -66,7 +83,7 @@ model ChatMessage {
   id            String      @id @default(cuid())
   sessionId     String
   role          String      // "USER" or "ASSISTANT"
-  content       String      // SQLite doesn't support @db.Text specific attribute easily, String is fine
+  content       String
   timestamp     DateTime    @default(now())
   session       ChatSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
 }

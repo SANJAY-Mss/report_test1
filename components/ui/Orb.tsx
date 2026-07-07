@@ -4,23 +4,13 @@ import { Mesh, Program, Renderer, Triangle, Vec3 } from 'ogl';
 import { useEffect, useRef } from 'react';
 import './Orb.css';
 
-export interface OrbProps {
-  hue?: number;
-  hoverIntensity?: number;
-  rotateOnHover?: boolean;
-  forceHoverState?: boolean;
-  backgroundColor?: string;
-  className?: string;
-}
-
 export default function Orb({
   hue = 0,
   hoverIntensity = 0.2,
   rotateOnHover = true,
   forceHoverState = false,
-  backgroundColor = '#000000',
-  className = ''
-}: OrbProps) {
+  backgroundColor = '#000000'
+}) {
   const ctnDom = useRef<HTMLDivElement>(null);
 
   const vert = `
@@ -241,6 +231,7 @@ export default function Orb({
     let currentRot = 0;
     const rotationSpeed = 0.3;
 
+    // Use window to capture mousemove sopointer-events-none works on the container
     const handleMouseMove = (e: MouseEvent) => {
       const rect = container.getBoundingClientRect();
       const x = e.clientX - rect.left;
@@ -264,6 +255,7 @@ export default function Orb({
       targetHover = 0;
     };
 
+    // Attach to window so clicks pass through but hover still tracks
     window.addEventListener('mousemove', handleMouseMove);
     window.addEventListener('mouseleave', handleMouseLeave);
 
@@ -275,7 +267,7 @@ export default function Orb({
       program.uniforms.iTime.value = t * 0.001;
       program.uniforms.hue.value = hue;
       program.uniforms.hoverIntensity.value = hoverIntensity;
-      program.uniforms.backgroundColor.value = hexToVec3(backgroundColor);
+      program.uniforms.backgroundColor.value = hexToVec3(backgroundColor as string);
 
       const effectiveHover = forceHoverState ? 1 : targetHover;
       program.uniforms.hover.value += (effectiveHover - program.uniforms.hover.value) * 0.1;
@@ -292,22 +284,17 @@ export default function Orb({
     return () => {
       cancelAnimationFrame(rafId);
       window.removeEventListener('resize', resize);
-      window.removeEventListener('mousemove', handleMouseMove as EventListener);
-      window.removeEventListener('mouseleave', handleMouseLeave as EventListener);
-
-      try {
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('mouseleave', handleMouseLeave);
+      if (container.contains(gl.canvas)) {
         container.removeChild(gl.canvas);
-      } catch (e) {
-        console.warn('Canvas already removed from container');
       }
-
-      const loseContext = gl.getExtension('WEBGL_lose_context');
-      if (loseContext) loseContext.loseContext();
+      gl.getExtension('WEBGL_lose_context')?.loseContext();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [hue, hoverIntensity, rotateOnHover, forceHoverState, backgroundColor]);
 
-  return <div ref={ctnDom} className={`orb-container ${className}`} />;
+  return <div ref={ctnDom} className="orb-container" />;
 }
 
 function hslToRgb(h: number, s: number, l: number) {
